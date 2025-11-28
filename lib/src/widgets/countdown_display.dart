@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/countdown_config.dart';
-import 'time_box.dart';
+import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
+import 'package:countdown_carousel_widget/src/widgets/time_box.dart';
 
 /// Display widget showing the countdown timer with 4 time boxes
 class CountdownDisplay extends StatelessWidget {

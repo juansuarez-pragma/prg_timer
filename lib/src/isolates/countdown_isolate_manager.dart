@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:isolate';
 
-import '../models/countdown_config.dart';
-import 'countdown_manager_interface.dart';
+import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
+import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interface.dart';
 
 /// Message types for isolate communication
 enum _IsolateMessageType {

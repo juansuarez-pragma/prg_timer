@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import '../isolates/countdown_manager_factory.dart';
-import '../isolates/countdown_manager_interface.dart';
-import '../models/countdown_config.dart';
+import 'package:countdown_carousel_widget/src/isolates/countdown_manager_factory.dart';
+import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interface.dart';
+import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 
 /// Controller for managing a single countdown timer with full control.
 ///

@@ -11,8 +11,8 @@ library;
 import 'package:flutter/material.dart';
 import 'package:countdown_carousel_widget/countdown_carousel_widget.dart';
 
-import '../widgets/global_controls.dart';
-import '../widgets/countdown_card.dart';
+import 'package:countdown_example/widgets/global_controls.dart';
+import 'package:countdown_example/widgets/countdown_card.dart';
 
 /// Página de demostración de múltiples countdowns independientes.
 ///

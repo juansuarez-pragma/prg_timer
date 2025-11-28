@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import '../models/countdown_config.dart';
+import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 
 /// State of a countdown manager
 enum CountdownState {

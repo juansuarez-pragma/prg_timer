@@ -38,8 +38,8 @@ library;
 
 import 'package:flutter/material.dart';
 
-import 'demos/basic_demo.dart';
-import 'demos/multi_countdown_demo.dart';
+import 'package:countdown_example/demos/basic_demo.dart';
+import 'package:countdown_example/demos/multi_countdown_demo.dart';
 
 /// Punto de entrada de la aplicación de ejemplo.
 void main() {

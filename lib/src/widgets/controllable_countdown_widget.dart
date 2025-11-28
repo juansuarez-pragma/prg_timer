@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../controllers/controllable_countdown_controller.dart';
-import '../isolates/countdown_manager_interface.dart';
-import '../models/countdown_config.dart';
-import 'countdown_display.dart';
+import 'package:countdown_carousel_widget/src/controllers/controllable_countdown_controller.dart';
+import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interface.dart';
+import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
+import 'package:countdown_carousel_widget/src/widgets/countdown_display.dart';
 
 /// A countdown widget with external control capabilities.
 ///
