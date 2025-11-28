@@ -1,56 +1,56 @@
 # Countdown Carousel Widget
 
 [![pub package](https://img.shields.io/pub/v/countdown_carousel_widget.svg)](https://pub.dev/packages/countdown_carousel_widget)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Flutter](https://img.shields.io/badge/Flutter-3.0+-blue.svg)](https://flutter.dev)
 
-A highly customizable countdown timer widget with an image carousel, powered by Dart Isolates for optimal performance on native platforms.
+Un widget de temporizador de cuenta regresiva altamente personalizable con carrusel de imágenes, potenciado por Dart Isolates para un rendimiento óptimo en plataformas nativas.
 
-## Features
+## Características
 
-- **Countdown Timer**: Displays days, hours, minutes, and seconds until a target date
-- **Image Carousel**: Horizontally scrollable image carousel with pagination indicators
-- **Cross-Platform**: Automatic platform detection with appropriate implementation
-- **Isolate Support**: Background processing on native platforms (iOS, Android, macOS, Windows, Linux)
-- **Web Support**: Timer-based fallback for web platform (Isolates not supported)
-- **Multiple Independent Countdowns**: Run multiple countdowns simultaneously, each with its own Isolate
-- **Pause/Resume/Reset**: Full control over countdown lifecycle
-- **Global Controls**: Manage all countdowns at once
-- **Fully Customizable**: Colors, labels, and styles can be configured
-- **Animated**: Smooth scale animations on value changes
-- **Responsive**: Adapts to available screen width
+- **Temporizador de Cuenta Regresiva**: Muestra días, horas, minutos y segundos hasta una fecha objetivo
+- **Carrusel de Imágenes**: Carrusel de imágenes desplazable horizontalmente con indicadores de paginación
+- **Multiplataforma**: Detección automática de plataforma con implementación apropiada
+- **Soporte de Isolates**: Procesamiento en segundo plano en plataformas nativas (iOS, Android, macOS, Windows, Linux)
+- **Soporte Web**: Fallback basado en Timer para plataforma web (Isolates no soportados)
+- **Múltiples Countdowns Independientes**: Ejecuta múltiples cuenta regresivas simultáneamente, cada una con su propio Isolate
+- **Pausar/Reanudar/Reiniciar**: Control total sobre el ciclo de vida del countdown
+- **Controles Globales**: Administra todos los countdowns a la vez
+- **Totalmente Personalizable**: Colores, etiquetas y estilos configurables
+- **Animado**: Animaciones suaves de escala en cambios de valor
+- **Responsivo**: Se adapta al ancho de pantalla disponible
 
-## Platform Support
+## Soporte de Plataformas
 
-| Platform | Implementation | Notes |
-|----------|---------------|-------|
-| iOS | Isolate | Background thread processing |
-| Android | Isolate | Background thread processing |
-| macOS | Isolate | Background thread processing |
-| Windows | Isolate | Background thread processing |
-| Linux | Isolate | Background thread processing |
-| **Web** | **Timer** | Isolates NOT supported on web |
+| Plataforma | Implementación | Notas |
+|------------|----------------|-------|
+| iOS | Isolate | Procesamiento en hilo de fondo |
+| Android | Isolate | Procesamiento en hilo de fondo |
+| macOS | Isolate | Procesamiento en hilo de fondo |
+| Windows | Isolate | Procesamiento en hilo de fondo |
+| Linux | Isolate | Procesamiento en hilo de fondo |
+| **Web** | **Timer** | Isolates NO soportados en web |
 
-The widget automatically detects the platform and uses the appropriate implementation.
+El widget detecta automáticamente la plataforma y usa la implementación apropiada.
 
-## Installation
+## Instalación
 
-Add this to your package's `pubspec.yaml` file:
+Agrega esto al archivo `pubspec.yaml` de tu paquete:
 
 ```yaml
 dependencies:
   countdown_carousel_widget: ^1.0.0
 ```
 
-Then run:
+Luego ejecuta:
 
 ```bash
 flutter pub get
 ```
 
-## Usage
+## Uso
 
-### Basic Usage
+### Uso Básico
 
 ```dart
 import 'package:countdown_carousel_widget/countdown_carousel_widget.dart';
@@ -58,23 +58,23 @@ import 'package:countdown_carousel_widget/countdown_carousel_widget.dart';
 CountdownCarouselWidget(
   targetDate: DateTime.now().add(Duration(days: 2, hours: 14)),
   images: [
-    CarouselImageItem.fromProvider(NetworkImage('https://example.com/image.jpg')),
+    CarouselImageItem.fromProvider(NetworkImage('https://ejemplo.com/imagen.jpg')),
   ],
-  onAddImage: () => print('Add image tapped'),
-  onCountdownComplete: () => print('Countdown complete!'),
+  onAddImage: () => print('Agregar imagen presionado'),
+  onCountdownComplete: () => print('¡Cuenta regresiva completada!'),
 )
 ```
 
-### Countdown Only (without carousel)
+### Solo Countdown (sin carrusel)
 
 ```dart
 CountdownOnlyWidget(
   targetDate: DateTime.now().add(Duration(hours: 5)),
-  onCountdownComplete: () => print('Done!'),
+  onCountdownComplete: () => print('¡Listo!'),
 )
 ```
 
-### Custom Styling
+### Estilos Personalizados
 
 ```dart
 CountdownCarouselWidget(
@@ -85,159 +85,159 @@ CountdownCarouselWidget(
 )
 ```
 
-### Multiple Independent Countdowns
+### Múltiples Countdowns Independientes
 
-Each countdown runs in its own Isolate and can be controlled independently:
+Cada countdown se ejecuta en su propio Isolate y puede ser controlado independientemente:
 
 ```dart
-// Create individual controllers
+// Crear controladores individuales
 final controller1 = ControllableCountdownController(
-  id: 'event_1',
+  id: 'evento_1',
   targetDate: DateTime.now().add(Duration(hours: 2)),
   useIsolate: true,
 );
 
 final controller2 = ControllableCountdownController(
-  id: 'event_2',
+  id: 'evento_2',
   targetDate: DateTime.now().add(Duration(hours: 5)),
   useIsolate: true,
 );
 
-// Use in widgets
+// Usar en widgets
 ControllableCountdownWidget(
   controller: controller1,
-  onCountdownComplete: () => print('Event 1 complete!'),
+  onCountdownComplete: () => print('¡Evento 1 completado!'),
 )
 
-// Control individually
-controller1.pause();    // Only pauses controller1
-controller2.resume();   // Only affects controller2
-controller1.reset();    // Reset to original target
+// Controlar individualmente
+controller1.pause();    // Solo pausa controller1
+controller2.resume();   // Solo afecta a controller2
+controller1.reset();    // Reinicia al objetivo original
 ```
 
-### Global Control for Multiple Countdowns
+### Control Global para Múltiples Countdowns
 
 ```dart
 final globalManager = GlobalCountdownManager();
 
-// Register controllers
+// Registrar controladores
 globalManager.register(controller1);
 globalManager.register(controller2);
 
-// Control all at once
+// Controlar todos a la vez
 globalManager.pauseAll();
 globalManager.resumeAll();
 globalManager.resetAll();
 
-// Clean up
+// Limpiar recursos
 await globalManager.disposeAll();
 ```
 
-### Controllable Countdown Card (with built-in controls)
+### Countdown Card Controlable (con controles integrados)
 
 ```dart
 ControllableCountdownCard(
   controller: controller,
-  title: 'Event Countdown',
+  title: 'Cuenta Regresiva del Evento',
   showControls: true,
-  onCountdownComplete: () => print('Done!'),
+  onCountdownComplete: () => print('¡Listo!'),
 )
 ```
 
-### Checking Platform Support
+### Verificar Soporte de Plataforma
 
 ```dart
-// Check if isolates are supported on the current platform
+// Verificar si los isolates están soportados en la plataforma actual
 if (CountdownManagerFactory.isolatesSupported) {
-  print('Running on native platform with Isolate support');
+  print('Ejecutando en plataforma nativa con soporte de Isolate');
 } else {
-  print('Running on web platform with Timer fallback');
+  print('Ejecutando en plataforma web con fallback de Timer');
 }
 ```
 
-### Force Timer Mode (all platforms)
+### Forzar Modo Timer (todas las plataformas)
 
 ```dart
 CountdownCarouselWidget(
   targetDate: DateTime.now().add(Duration(days: 1)),
-  useIsolate: false, // Forces Timer usage even on native platforms
+  useIsolate: false, // Fuerza uso de Timer incluso en plataformas nativas
 )
 ```
 
-## API Reference
+## Referencia de API
 
 ### CountdownCarouselWidget
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `targetDate` | `DateTime` | **required** | The target date/time for the countdown |
-| `images` | `List<CarouselImageItem>` | `[]` | List of images to display |
-| `onAddImage` | `VoidCallback?` | `null` | Callback when "Add Image" is tapped |
-| `onImageTap` | `Function(int)?` | `null` | Callback when an image is tapped |
-| `onImageRemove` | `Function(int)?` | `null` | Callback when remove button is tapped |
-| `onCountdownComplete` | `VoidCallback?` | `null` | Callback when countdown reaches zero |
-| `maxImages` | `int` | `10` | Maximum number of images allowed |
-| `useIsolate` | `bool?` | Auto-detect | `null`: auto-detect, `true`: force isolate, `false`: force timer |
-| `boxColor` | `Color` | `Color(0xFF1E3A5F)` | Background color of time boxes |
-| `numberColor` | `Color` | `Colors.white` | Color of countdown numbers |
-| `labelColor` | `Color` | `Colors.white` | Color of labels (DAYS, HOURS, etc.) |
-| `carouselBackgroundColor` | `Color` | `Color(0xFFB3D4E8)` | Background color of carousel |
-| `timeLabels` | `List<String>?` | `['DAYS', 'HOURS', 'MINS', 'SECS']` | Custom labels |
-| `animateChanges` | `bool` | `true` | Animate value changes |
+| Propiedad | Tipo | Defecto | Descripción |
+|-----------|------|---------|-------------|
+| `targetDate` | `DateTime` | **requerido** | La fecha/hora objetivo para la cuenta regresiva |
+| `images` | `List<CarouselImageItem>` | `[]` | Lista de imágenes a mostrar |
+| `onAddImage` | `VoidCallback?` | `null` | Callback cuando se presiona "Agregar Imagen" |
+| `onImageTap` | `Function(int)?` | `null` | Callback cuando se presiona una imagen |
+| `onImageRemove` | `Function(int)?` | `null` | Callback cuando se presiona el botón de eliminar |
+| `onCountdownComplete` | `VoidCallback?` | `null` | Callback cuando la cuenta regresiva llega a cero |
+| `maxImages` | `int` | `10` | Número máximo de imágenes permitidas |
+| `useIsolate` | `bool?` | Auto-detectar | `null`: auto-detectar, `true`: forzar isolate, `false`: forzar timer |
+| `boxColor` | `Color` | `Color(0xFF1E3A5F)` | Color de fondo de las cajas de tiempo |
+| `numberColor` | `Color` | `Colors.white` | Color de los números de la cuenta regresiva |
+| `labelColor` | `Color` | `Colors.white` | Color de las etiquetas (DIAS, HORAS, etc.) |
+| `carouselBackgroundColor` | `Color` | `Color(0xFFB3D4E8)` | Color de fondo del carrusel |
+| `timeLabels` | `List<String>?` | `['DAYS', 'HOURS', 'MINS', 'SECS']` | Etiquetas personalizadas |
+| `animateChanges` | `bool` | `true` | Animar cambios de valor |
 
 ### ControllableCountdownController
 
-| Property/Method | Type | Description |
-|-----------------|------|-------------|
-| `id` | `String` | Unique identifier for the countdown |
-| `state` | `CountdownState` | Current state (idle, running, paused, completed, stopped) |
-| `isRunning` | `bool` | Whether countdown is actively running |
-| `isPaused` | `bool` | Whether countdown is paused |
-| `timeStream` | `Stream<TimeRemaining>` | Stream of time updates |
-| `stateStream` | `Stream<CountdownState>` | Stream of state changes |
-| `start()` | `Future<void>` | Start the countdown |
-| `pause()` | `void` | Pause the countdown |
-| `resume()` | `void` | Resume from paused state |
-| `reset()` | `void` | Reset to original target |
-| `resetTo(DateTime)` | `void` | Reset to new target |
-| `dispose()` | `Future<void>` | Clean up resources |
+| Propiedad/Método | Tipo | Descripción |
+|------------------|------|-------------|
+| `id` | `String` | Identificador único para el countdown |
+| `state` | `CountdownState` | Estado actual (idle, running, paused, completed, stopped) |
+| `isRunning` | `bool` | Si el countdown está activamente ejecutándose |
+| `isPaused` | `bool` | Si el countdown está pausado |
+| `timeStream` | `Stream<TimeRemaining>` | Stream de actualizaciones de tiempo |
+| `stateStream` | `Stream<CountdownState>` | Stream de cambios de estado |
+| `start()` | `Future<void>` | Iniciar el countdown |
+| `pause()` | `void` | Pausar el countdown |
+| `resume()` | `void` | Reanudar desde estado pausado |
+| `reset()` | `void` | Reiniciar al objetivo original |
+| `resetTo(DateTime)` | `void` | Reiniciar a nuevo objetivo |
+| `dispose()` | `Future<void>` | Limpiar recursos |
 
 ### GlobalCountdownManager
 
-| Method | Description |
+| Método | Descripción |
 |--------|-------------|
-| `register(controller)` | Register a controller for global management |
-| `unregister(id)` | Remove a controller from management |
-| `pauseAll()` | Pause all registered countdowns |
-| `resumeAll()` | Resume all registered countdowns |
-| `resetAll()` | Reset all to original targets |
-| `resetAllTo(DateTime)` | Reset all to new target |
-| `disposeAll()` | Dispose all controllers |
+| `register(controller)` | Registrar un controlador para gestión global |
+| `unregister(id)` | Remover un controlador de la gestión |
+| `pauseAll()` | Pausar todos los countdowns registrados |
+| `resumeAll()` | Reanudar todos los countdowns registrados |
+| `resetAll()` | Reiniciar todos a sus objetivos originales |
+| `resetAllTo(DateTime)` | Reiniciar todos a nuevo objetivo |
+| `disposeAll()` | Liberar todos los controladores |
 
 ### CarouselImageItem
 
 ```dart
-// Create from an ImageProvider
+// Crear desde un ImageProvider
 CarouselImageItem.fromProvider(
-  NetworkImage('https://example.com/image.jpg'),
-  id: 'unique_id',
+  NetworkImage('https://ejemplo.com/imagen.jpg'),
+  id: 'id_unico',
 )
 
-// Create an add button placeholder
+// Crear un placeholder de botón agregar
 CarouselImageItem.addButton()
 ```
 
-## Architecture
+## Arquitectura
 
-### Native Platforms (Isolate)
+### Plataformas Nativas (Isolate)
 
 ```
-Main Isolate (UI)              Worker Isolate
+Isolate Principal (UI)         Isolate Worker
       |                              |
       |---- spawn() --------------->|
       |                              |
       |<---- TimeRemaining ---------|
-      |      (every second)          |
+      |      (cada segundo)          |
       |                              |
       |---- pause() --------------->|
       |---- resume() -------------->|
@@ -245,29 +245,29 @@ Main Isolate (UI)              Worker Isolate
       |                              |
 ```
 
-### Web Platform (Timer)
+### Plataforma Web (Timer)
 
 ```
-Main Thread
+Hilo Principal
       |
-      |-- Timer.periodic(1 second)
+      |-- Timer.periodic(1 segundo)
       |         |
       |         v
-      |   Calculate TimeRemaining
+      |   Calcular TimeRemaining
       |         |
       |         v
-      |   Update UI via Stream
+      |   Actualizar UI via Stream
       |
 ```
 
-### Multiple Countdowns Architecture
+### Arquitectura de Múltiples Countdowns
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                  Main Isolate (UI)                   │
+│                Isolate Principal (UI)                │
 │                                                      │
 │  ┌──────────────┐  ┌──────────────┐  ┌────────────┐ │
-│  │ Controller 1 │  │ Controller 2 │  │Controller N│ │
+│  │ Controlador 1│  │ Controlador 2│  │Controlador N│ │
 │  └──────┬───────┘  └──────┬───────┘  └─────┬──────┘ │
 └─────────┼─────────────────┼────────────────┼────────┘
           │                 │                │
@@ -278,71 +278,71 @@ Main Thread
    └──────────────┘  └──────────────┘  └──────────────┘
 ```
 
-## Why Isolates Don't Work on Web
+## Por qué los Isolates No Funcionan en Web
 
-Dart Isolates are **not supported** on web platforms. This is because:
+Los Dart Isolates **no están soportados** en plataformas web. Esto se debe a:
 
-1. **JavaScript is single-threaded**: The browser's JavaScript engine runs on a single thread
-2. **Web Workers are different**: While Web Workers exist, they have a different API than Isolates
-3. **No built-in support**: Flutter/Dart doesn't provide automatic translation of Isolates to Web Workers
+1. **JavaScript es single-threaded**: El motor JavaScript del navegador se ejecuta en un solo hilo
+2. **Web Workers son diferentes**: Aunque existen Web Workers, tienen una API diferente a los Isolates
+3. **Sin soporte nativo**: Flutter/Dart no proporciona traducción automática de Isolates a Web Workers
 
-This package handles this automatically by:
-- Using **conditional imports** to avoid importing `dart:isolate` on web
-- Providing a **Timer-based fallback** that works identically on web
-- **Auto-detecting** the platform at runtime
+Este paquete maneja esto automáticamente mediante:
+- Uso de **imports condicionales** para evitar importar `dart:isolate` en web
+- Proporcionar un **fallback basado en Timer** que funciona idénticamente en web
+- **Auto-detección** de la plataforma en tiempo de ejecución
 
-## Example
+## Ejemplo
 
-See the [example](example/) directory for a complete demo application with:
-- Basic countdown with carousel
-- Multiple independent countdowns
-- Global controls demo
-- Custom styling examples
+Consulta el directorio [example](example/) para una aplicación de demostración completa con:
+- Countdown básico con carrusel
+- Múltiples countdowns independientes
+- Demo de controles globales
+- Ejemplos de estilos personalizados
 
 ```bash
 cd example
-flutter run -d chrome  # Test web platform (Timer)
-flutter run -d macos   # Test native platform (Isolate)
-flutter run -d android # Test Android (Isolate)
+flutter run -d chrome  # Probar plataforma web (Timer)
+flutter run -d macos   # Probar plataforma nativa (Isolate)
+flutter run -d android # Probar Android (Isolate)
 ```
 
 ## Testing
 
-Run the test suite:
+Ejecutar el conjunto de pruebas:
 
 ```bash
 flutter test
 ```
 
-The package includes 39+ tests covering:
-- TimeRemaining model
-- CountdownConfig model
-- Widget rendering
-- Timer manager functionality
-- Multiple countdown independence
-- Global manager operations
-- Pause/Resume/Reset operations
+El paquete incluye más de 39 pruebas cubriendo:
+- Modelo TimeRemaining
+- Modelo CountdownConfig
+- Renderizado de widgets
+- Funcionalidad del timer manager
+- Independencia de múltiples countdowns
+- Operaciones del global manager
+- Operaciones de Pausar/Reanudar/Reiniciar
 
-## Contributing
+## Contribuir
 
-Contributions are welcome! Please read our contributing guidelines and submit pull requests to our repository.
+¡Las contribuciones son bienvenidas! Por favor lee nuestras guías de contribución y envía pull requests a nuestro repositorio.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork del repositorio
+2. Crea tu rama de feature (`git checkout -b feature/feature-increible`)
+3. Commit de tus cambios (`git commit -m 'Agregar feature increíble'`)
+4. Push a la rama (`git push origin feature/feature-increible`)
+5. Abre un Pull Request
 
-## License
+## Licencia
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for a list of changes.
+Consulta [CHANGELOG.md](CHANGELOG.md) para una lista de cambios.
 
-## Support
+## Soporte
 
-If you find this package helpful, please give it a star on GitHub!
+¡Si encuentras útil este paquete, por favor dale una estrella en GitHub!
 
-For bugs and feature requests, please [create an issue](https://github.com/juansuarez-pragma/prg_timer/issues).
+Para bugs y solicitudes de funcionalidades, por favor [crea un issue](https://github.com/juansuarez-pragma/prg_timer/issues).

@@ -1,46 +1,46 @@
-# Changelog
+# Registro de Cambios
 
-All notable changes to this project will be documented in this file.
+Todos los cambios notables de este proyecto serán documentados en este archivo.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
+y este proyecto adhiere a [Versionamiento Semántico](https://semver.org/lang/es/).
 
 ## [1.0.0] - 2024-11-28
 
-### Added
+### Agregado
 
-- **CountdownCarouselWidget**: Main widget with countdown timer and image carousel
-- **CountdownOnlyWidget**: Simplified widget with just the countdown timer
-- **Isolate Support**: Background processing on native platforms (iOS, Android, macOS, Windows, Linux)
-- **Web Support**: Timer-based fallback for web platform where Isolates are not supported
-- **Platform Auto-Detection**: Automatic selection of appropriate implementation based on platform
-- **ControllableCountdownController**: Individual countdown controller with pause/resume/reset
-- **GlobalCountdownManager**: Manage multiple countdowns with batch operations
-- **ControllableCountdownWidget**: Widget with external control capabilities
-- **ControllableCountdownCard**: Card widget with built-in control buttons
-- **Multiple Independent Countdowns**: Each countdown runs in its own Isolate
-- **Customizable Styling**: Colors, labels, and styles can be configured
-- **Animated Value Changes**: Smooth scale animations on value changes
-- **Responsive Design**: Adapts to available screen width
-- **Image Carousel**: Horizontally scrollable image carousel with pagination
-- **TimeRemaining Model**: Immutable model for countdown time values
-- **CountdownState Enum**: State management for countdown lifecycle
+- **CountdownCarouselWidget**: Widget principal con temporizador de cuenta regresiva y carrusel de imágenes
+- **CountdownOnlyWidget**: Widget simplificado solo con el temporizador de cuenta regresiva
+- **Soporte de Isolates**: Procesamiento en segundo plano en plataformas nativas (iOS, Android, macOS, Windows, Linux)
+- **Soporte Web**: Fallback basado en Timer para plataforma web donde los Isolates no están soportados
+- **Auto-Detección de Plataforma**: Selección automática de la implementación apropiada según la plataforma
+- **ControllableCountdownController**: Controlador individual de countdown con pausar/reanudar/reiniciar
+- **GlobalCountdownManager**: Administrar múltiples countdowns con operaciones por lotes
+- **ControllableCountdownWidget**: Widget con capacidades de control externo
+- **ControllableCountdownCard**: Widget de tarjeta con botones de control integrados
+- **Múltiples Countdowns Independientes**: Cada countdown se ejecuta en su propio Isolate
+- **Estilos Personalizables**: Colores, etiquetas y estilos pueden ser configurados
+- **Cambios de Valor Animados**: Animaciones suaves de escala en cambios de valor
+- **Diseño Responsivo**: Se adapta al ancho de pantalla disponible
+- **Carrusel de Imágenes**: Carrusel de imágenes desplazable horizontalmente con paginación
+- **Modelo TimeRemaining**: Modelo inmutable para valores de tiempo de cuenta regresiva
+- **Enum CountdownState**: Gestión de estado para el ciclo de vida del countdown
 
-### Features
+### Características
 
-- Countdown displays days, hours, minutes, and seconds
-- Pause, resume, and reset individual countdowns
-- Global pause/resume/reset for all countdowns
-- Customizable time labels (localization support)
-- Add/remove images in carousel
-- Image tap and remove callbacks
-- Countdown completion callback
-- Force timer mode option for debugging
+- El countdown muestra días, horas, minutos y segundos
+- Pausar, reanudar y reiniciar countdowns individuales
+- Pausar/reanudar/reiniciar global para todos los countdowns
+- Etiquetas de tiempo personalizables (soporte de localización)
+- Agregar/eliminar imágenes en el carrusel
+- Callbacks de tap y eliminación de imágenes
+- Callback de finalización del countdown
+- Opción para forzar modo timer para depuración
 
-### Technical
+### Técnico
 
-- Conditional imports for web compatibility
-- Bidirectional Isolate communication
-- Stream-based time updates
-- 39+ unit and widget tests
-- Full API documentation
+- Imports condicionales para compatibilidad web
+- Comunicación bidireccional con Isolates
+- Actualizaciones de tiempo basadas en Stream
+- Más de 39 pruebas unitarias y de widgets
+- Documentación completa de la API
