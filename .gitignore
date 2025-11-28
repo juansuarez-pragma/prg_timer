@@ -1,0 +1,61 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+# Libraries should not include pubspec.lock, per https://dart.dev/guides/libraries/private-files#pubspeclock.
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Example app specific
+example/.dart_tool/
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+example/pubspec.lock
+example/build/
+example/android/.gradle/
+example/android/app/build/
+example/android/local.properties
+example/ios/.symlinks/
+example/ios/Pods/
+example/ios/Flutter/Flutter.framework
+example/ios/Flutter/Flutter.podspec
+example/macos/Flutter/ephemeral/
+example/linux/flutter/ephemeral/
+example/windows/flutter/ephemeral/

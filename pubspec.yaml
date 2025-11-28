@@ -1,0 +1,40 @@
+name: countdown_carousel_widget
+description: "A customizable countdown timer widget with image carousel, powered by Dart Isolates for optimal performance. Supports multiple independent countdowns with pause/resume/reset controls."
+version: 1.0.0
+homepage: https://github.com/juansuarez-pragma/prg_timer
+repository: https://github.com/juansuarez-pragma/prg_timer
+issue_tracker: https://github.com/juansuarez-pragma/prg_timer/issues
+
+topics:
+  - countdown
+  - timer
+  - widget
+  - isolate
+  - carousel
+
+screenshots:
+  - description: 'Multi countdown demo showing independent timers'
+    path: screenshots/multi_countdown.png
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
+
+environment:
+  sdk: ^3.9.2
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
