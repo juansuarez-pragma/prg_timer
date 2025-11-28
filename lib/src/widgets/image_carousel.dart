@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Represents an image item in the carousel
+/// Representa un elemento de imagen en el carrusel
 class CarouselImageItem {
-  /// The image provider (can be NetworkImage, AssetImage, FileImage, etc.)
+  /// El proveedor de imágenes (puede ser NetworkImage, AssetImage, FileImage, etc.)
   final ImageProvider? imageProvider;
 
-  /// Whether this is an "add image" placeholder
+  /// Si este es un marcador de posición "añadir imagen"
   final bool isAddButton;
 
-  /// Optional identifier for the image
+  /// Identificador opcional para la imagen
   final String? id;
 
   const CarouselImageItem({
@@ -17,63 +17,63 @@ class CarouselImageItem {
     this.id,
   });
 
-  /// Creates an add button item
+  /// Crea un elemento de botón de añadir
   const CarouselImageItem.addButton()
-      : imageProvider = null,
-        isAddButton = true,
-        id = null;
+    : imageProvider = null,
+      isAddButton = true,
+      id = null;
 
-  /// Creates an image item from a provider
+  /// Crea un elemento de imagen a partir de un proveedor
   CarouselImageItem.fromProvider(ImageProvider provider, {this.id})
-      : imageProvider = provider,
-        isAddButton = false;
+    : imageProvider = provider,
+      isAddButton = false;
 }
 
-/// Image carousel widget with page indicators
+/// Widget de carrusel de imágenes con indicadores de página
 class ImageCarousel extends StatefulWidget {
-  /// List of images to display
+  /// Lista de imágenes a mostrar
   final List<CarouselImageItem> images;
 
-  /// Callback when "Add Image" button is tapped
+  /// Callback cuando se toca el botón "Añadir imagen"
   final VoidCallback? onAddImage;
 
-  /// Callback when an image is tapped
+  /// Callback cuando se toca una imagen
   final void Function(int index)? onImageTap;
 
-  /// Callback when an image should be removed
+  /// Callback cuando una imagen debe ser eliminada
   final void Function(int index)? onImageRemove;
 
-  /// Background color of the carousel section
+  /// Color de fondo de la sección del carrusel
   final Color backgroundColor;
 
-  /// Color of the active page indicator
+  /// Color del indicador de página activa
   final Color activeIndicatorColor;
 
-  /// Color of inactive page indicators
+  /// Color de los indicadores de página inactivos
   final Color inactiveIndicatorColor;
 
-  /// Border radius of image containers
+  /// Radio del borde de los contenedores de imagen
   final double imageBorderRadius;
 
-  /// Placeholder icon color
+  /// Color del icono de marcador de posición
   final Color placeholderIconColor;
 
-  /// Add button color
+  /// Color del botón de añadir
   final Color addButtonColor;
 
-  /// Add button icon color
+  /// Color del icono del botón de añadir
   final Color addButtonIconColor;
 
-  /// "Add Image" button text
+  /// Texto del botón "Añadir imagen"
   final String addImageText;
 
-  /// Maximum number of images allowed
+  /// Número máximo de imágenes permitidas
   final int maxImages;
 
-  /// Height of the carousel
+  /// Altura del carrusel
   final double height;
 
-  /// Whether to show remove buttons on images
+  /// Si se deben mostrar los botones de eliminar en las imágenes
   final bool showRemoveButtons;
 
   const ImageCarousel({
@@ -109,9 +109,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(
-      viewportFraction: 0.85,
-    );
+    _pageController = PageController(viewportFraction: 0.85);
   }
 
   @override
@@ -131,8 +129,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
     // Group items into pages of _visibleItems
     final groups = <List<CarouselImageItem>>[];
     for (var i = 0; i < allItems.length; i += _visibleItems) {
-      final end =
-          (i + _visibleItems < allItems.length) ? i + _visibleItems : allItems.length;
+      final end = (i + _visibleItems < allItems.length)
+          ? i + _visibleItems
+          : allItems.length;
       groups.add(allItems.sublist(i, end));
     }
 
@@ -236,7 +235,8 @@ class _ImageCarouselState extends State<ImageCarousel> {
                 onTap: widget.onImageTap != null
                     ? () => widget.onImageTap!(itemIndex)
                     : null,
-                onRemove: widget.showRemoveButtons && widget.onImageRemove != null
+                onRemove:
+                    widget.showRemoveButtons && widget.onImageRemove != null
                     ? () => widget.onImageRemove!(itemIndex)
                     : null,
               ),
@@ -303,11 +303,7 @@ class _ImageTile extends StatelessWidget {
                   color: const Color(0xFF1E3A5F),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 14,
-                ),
+                child: const Icon(Icons.add, color: Colors.white, size: 14),
               ),
             ),
           // Remove button
@@ -324,11 +320,7 @@ class _ImageTile extends StatelessWidget {
                     color: Colors.red,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 14,
-                  ),
+                  child: const Icon(Icons.close, color: Colors.white, size: 14),
                 ),
               ),
             ),
@@ -341,11 +333,7 @@ class _ImageTile extends StatelessWidget {
     return Container(
       color: const Color(0xFFE0E0E0),
       child: Center(
-        child: Icon(
-          Icons.landscape,
-          size: 32,
-          color: placeholderIconColor,
-        ),
+        child: Icon(Icons.landscape, size: 32, color: placeholderIconColor),
       ),
     );
   }

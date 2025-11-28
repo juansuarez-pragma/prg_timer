@@ -8,27 +8,27 @@ import 'models/countdown_config.dart';
 import 'widgets/countdown_display.dart';
 import 'widgets/image_carousel.dart';
 
-/// A countdown timer widget with an image carousel.
+/// Un widget de temporizador de cuenta atrás con un carrusel de imágenes.
 ///
-/// This widget displays a countdown timer showing days, hours, minutes, and seconds
-/// until a target date, along with a scrollable image carousel at the bottom.
+/// Este widget muestra un temporizador de cuenta atrás que muestra días, horas, minutos y segundos
+/// hasta una fecha objetivo, junto con un carrusel de imágenes desplazable en la parte inferior.
 ///
-/// ## Platform-Specific Behavior
+/// ## Comportamiento Específico de la Plataforma
 ///
-/// The countdown calculations are handled differently based on the platform:
+/// Los cálculos de la cuenta atrás se manejan de manera diferente según la plataforma:
 ///
-/// - **Native platforms** (iOS, Android, macOS, Windows, Linux):
-///   Uses Dart Isolates for background processing, keeping the UI thread free.
+/// - **Plataformas nativas** (iOS, Android, macOS, Windows, Linux):
+///   Utiliza Dart Isolates para el procesamiento en segundo plano, manteniendo el hilo de la UI libre.
 ///
-/// - **Web platform**:
-///   Uses Timer.periodic since Isolates are NOT supported on web.
-///   The countdown runs on the main thread but is lightweight enough
-///   to not affect UI performance.
+/// - **Plataforma web**:
+///   Utiliza Timer.periodic ya que los Isolates NO son compatibles con la web.
+///   La cuenta atrás se ejecuta en el hilo principal pero es lo suficientemente ligera
+///   como para no afectar el rendimiento de la UI.
 ///
-/// You can override this behavior using the [useIsolate] parameter:
-/// - `useIsolate: true` - Force isolate usage (will fail on web)
-/// - `useIsolate: false` - Force timer usage on all platforms
-/// - `useIsolate: null` (default) - Auto-detect based on platform
+/// Puedes anular este comportamiento usando el parámetro [useIsolate]:
+/// - `useIsolate: true` - Forzar el uso de isolate (fallará en la web)
+/// - `useIsolate: false` - Forzar el uso de temporizador en todas las plataformas
+/// - `useIsolate: null` (por defecto) - Detección automática según la plataforma
 ///
 /// Example usage:
 /// ```dart
@@ -42,70 +42,70 @@ import 'widgets/image_carousel.dart';
 /// )
 /// ```
 class CountdownCarouselWidget extends StatefulWidget {
-  /// The target date/time for the countdown
+  /// La fecha/hora objetivo para la cuenta atrás
   final DateTime targetDate;
 
-  /// Callback when the countdown reaches zero
+  /// Callback cuando la cuenta atrás llega a cero
   final VoidCallback? onCountdownComplete;
 
-  /// List of images to display in the carousel
+  /// Lista de imágenes para mostrar en el carrusel
   final List<CarouselImageItem> images;
 
-  /// Callback when "Add Image" button is tapped
+  /// Callback cuando se toca el botón "Añadir imagen"
   final VoidCallback? onAddImage;
 
-  /// Callback when an image is tapped
+  /// Callback cuando se toca una imagen
   final void Function(int index)? onImageTap;
 
-  /// Callback when an image should be removed
+  /// Callback cuando una imagen debe ser eliminada
   final void Function(int index)? onImageRemove;
 
-  /// Maximum number of images allowed in the carousel
+  /// Número máximo de imágenes permitidas en el carrusel
   final int maxImages;
 
-  /// Whether to use an isolate for countdown calculations.
+  /// Si se debe usar un isolate para los cálculos de la cuenta atrás.
   ///
-  /// - `true`: Force isolate usage (will fail silently on web, falling back to timer)
-  /// - `false`: Force timer usage on all platforms
-  /// - `null` (default): Auto-detect based on platform
-  ///   - Native platforms: Uses Isolate
-  ///   - Web platform: Uses Timer
+  /// - `true`: Forzar el uso de isolate (fallará silenciosamente en la web, recurriendo a un temporizador)
+  /// - `false`: Forzar el uso de temporizador en todas las plataformas
+  /// - `null` (por defecto): Detección automática según la plataforma
+  ///   - Plataformas nativas: Utiliza Isolate
+  ///   - Plataforma web: Utiliza Timer
   final bool? useIsolate;
 
-  /// Background color of the countdown section
+  /// Color de fondo de la sección de cuenta atrás
   final Color countdownBackgroundColor;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Text color for the countdown numbers
+  /// Color del texto de los números de la cuenta atrás
   final Color numberColor;
 
-  /// Text color for the countdown labels
+  /// Color del texto de las etiquetas de la cuenta atrás
   final Color labelColor;
 
-  /// Background color of the carousel section
+  /// Color de fondo de la sección del carrusel
   final Color carouselBackgroundColor;
 
-  /// Border radius for the main container
+  /// Radio del borde del contenedor principal
   final double borderRadius;
 
-  /// Border radius for individual time boxes
+  /// Radio del borde de las cajas de tiempo individuales
   final double boxBorderRadius;
 
-  /// Custom labels for time units (defaults to ['DAYS', 'HOURS', 'MINS', 'SECS'])
+  /// Etiquetas personalizadas para las unidades de tiempo (por defecto ['DÍAS', 'HORAS', 'MINS', 'SECS'])
   final List<String>? timeLabels;
 
-  /// Whether to animate countdown value changes
+  /// Si se deben animar los cambios de valor de la cuenta atrás
   final bool animateChanges;
 
-  /// Height of the carousel section
+  /// Altura de la sección del carrusel
   final double carouselHeight;
 
-  /// "Add Image" button text
+  /// Texto del botón "Añadir imagen"
   final String addImageText;
 
-  /// Whether to show remove buttons on images
+  /// Si se deben mostrar los botones de eliminar imagen
   final bool showImageRemoveButtons;
 
   const CountdownCarouselWidget({
@@ -155,7 +155,8 @@ class _CountdownCarouselWidgetState extends State<CountdownCarouselWidget> {
     if (widget.useIsolate == false) return false;
 
     // If explicitly set to true, try to use isolate (may fail on web)
-    if (widget.useIsolate == true) return CountdownManagerFactory.isolatesSupported;
+    if (widget.useIsolate == true)
+      return CountdownManagerFactory.isolatesSupported;
 
     // Auto-detect: use isolate only if platform supports it
     return CountdownManagerFactory.isolatesSupported;
@@ -280,45 +281,45 @@ class _CountdownCarouselWidgetState extends State<CountdownCarouselWidget> {
   }
 }
 
-/// A simpler countdown widget without the image carousel.
+/// Un widget de cuenta atrás más simple sin el carrusel de imágenes.
 ///
-/// This widget displays only the countdown timer (days, hours, minutes, seconds).
-/// Use this when you don't need the image carousel functionality.
+/// Este widget muestra solo el temporizador de cuenta atrás (días, horas, minutos, segundos).
+/// Úsalo cuando no necesites la funcionalidad del carrusel de imágenes.
 ///
-/// See [CountdownCarouselWidget] for documentation on platform-specific behavior.
+/// Consulta [CountdownCarouselWidget] para obtener documentación sobre el comportamiento específico de la plataforma.
 class CountdownOnlyWidget extends StatefulWidget {
-  /// The target date/time for the countdown
+  /// La fecha/hora objetivo para la cuenta atrás
   final DateTime targetDate;
 
-  /// Callback when the countdown reaches zero
+  /// Callback cuando la cuenta atrás llega a cero
   final VoidCallback? onCountdownComplete;
 
-  /// Whether to use an isolate for countdown calculations.
-  /// See [CountdownCarouselWidget.useIsolate] for details.
+  /// Si se debe usar un isolate para los cálculos de la cuenta atrás.
+  /// Consulta [CountdownCarouselWidget.useIsolate] para más detalles.
   final bool? useIsolate;
 
-  /// Background color of the countdown section
+  /// Color de fondo de la sección de cuenta atrás
   final Color backgroundColor;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Text color for the countdown numbers
+  /// Color del texto de los números de la cuenta atrás
   final Color numberColor;
 
-  /// Text color for the countdown labels
+  /// Color del texto de las etiquetas de la cuenta atrás
   final Color labelColor;
 
-  /// Border radius for the main container
+  /// Radio del borde del contenedor principal
   final double borderRadius;
 
-  /// Border radius for individual time boxes
+  /// Radio del borde de las cajas de tiempo individuales
   final double boxBorderRadius;
 
-  /// Custom labels for time units
+  /// Etiquetas personalizadas para las unidades de tiempo
   final List<String>? timeLabels;
 
-  /// Whether to animate countdown value changes
+  /// Si se deben animar los cambios de valor de la cuenta atrás
   final bool animateChanges;
 
   const CountdownOnlyWidget({
@@ -354,7 +355,8 @@ class _CountdownOnlyWidgetState extends State<CountdownOnlyWidget> {
 
   bool get _shouldUseIsolate {
     if (widget.useIsolate == false) return false;
-    if (widget.useIsolate == true) return CountdownManagerFactory.isolatesSupported;
+    if (widget.useIsolate == true)
+      return CountdownManagerFactory.isolatesSupported;
     return CountdownManagerFactory.isolatesSupported;
   }
 

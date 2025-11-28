@@ -4,157 +4,157 @@ import 'package:countdown_carousel_widget/src/isolates/countdown_manager_factory
 import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interface.dart';
 import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 
-/// Controller for managing a single countdown timer with full control.
+/// Controlador para gestionar un único temporizador de cuenta atrás con control total.
 ///
-/// Each controller creates its own [CountdownManagerBase] instance,
-/// ensuring complete independence from other countdowns.
+/// Cada controlador crea su propia instancia de [CountdownManagerBase],
+/// garantizando una independencia total de otras cuentas atrás.
 ///
-/// ## Features
-/// - Start/Stop countdown
-/// - Pause/Resume without losing progress
-/// - Reset to new or original target date
-/// - State tracking via streams
+/// ## Características
+/// - Iniciar/Detener la cuenta atrás
+/// - Pausar/Reanudar sin perder el progreso
+/// - Restablecer a una fecha objetivo nueva o a la original
+/// - Seguimiento del estado a través de streams
 ///
-/// ## Independence Guarantee
-/// Each [ControllableCountdownController] instance:
-/// - Creates its own Isolate (on native) or Timer (on web)
-/// - Maintains its own state independently
-/// - Can be controlled without affecting other controllers
+/// ## Garantía de Independencia
+/// Cada instancia de [ControllableCountdownController]:
+/// - Crea su propio Isolate (en nativo) o Timer (en web)
+/// - Mantiene su propio estado de forma independiente
+/// - Puede ser controlado sin afectar a otros controladores
 ///
-/// ## Example
+/// ## Ejemplo
 /// ```dart
 /// final controller = ControllableCountdownController(
-///   id: 'countdown_1',
-///   targetDate: DateTime.now().add(Duration(hours: 2)),
+/// id: 'countdown_1',
+/// targetDate: DateTime.now().add(Duration(hours: 2)),
 /// );
 ///
 /// await controller.start();
 ///
-/// // Pause this countdown only
+/// // Pausar solo esta cuenta atrás
 /// controller.pause();
 ///
-/// // Resume later
+/// // Reanudar más tarde
 /// controller.resume();
 ///
-/// // Reset to original target
+/// // Restablecer al objetivo original
 /// controller.reset();
 ///
-/// // Clean up
+/// // Limpiar
 /// await controller.dispose();
 /// ```
 class ControllableCountdownController {
-  /// Unique identifier for this countdown
+  /// Identificador único para esta cuenta atrás
   final String id;
 
-  /// The original target date (used for reset to original)
+  /// La fecha objetivo original (usada para restablecer al original)
   final DateTime _originalTargetDate;
 
-  /// Current target date (may change after reset with new date)
+  /// Fecha objetivo actual (puede cambiar después de restablecer con una nueva fecha)
   DateTime _currentTargetDate;
 
-  /// Update interval in milliseconds
+  /// Intervalo de actualización en milisegundos
   final int updateIntervalMs;
 
-  /// Whether to use Isolate (null = auto-detect)
+  /// Si se debe usar Isolate (nulo = autodetección)
   final bool? useIsolate;
 
-  /// The countdown manager (Isolate or Timer based)
+  /// El gestor de la cuenta atrás (basado en Isolate o Timer)
   CountdownManagerBase? _manager;
 
-  /// Stream controller for time remaining updates
+  /// Controlador de stream para las actualizaciones del tiempo restante
   StreamController<TimeRemaining>? _timeStreamController;
 
-  /// Stream controller for state updates
+  /// Controlador de stream para las actualizaciones de estado
   final StreamController<CountdownState> _stateStreamController =
       StreamController<CountdownState>.broadcast();
 
-  /// Subscription to the manager's stream
+  /// Suscripción al stream del gestor
   StreamSubscription<TimeRemaining>? _managerSubscription;
 
-  /// Current time remaining (cached for getters)
+  /// Tiempo restante actual (cacheado para los getters)
   TimeRemaining _currentTimeRemaining = const TimeRemaining.zero();
 
-  /// Whether the countdown has been started
+  /// Si la cuenta atrás ha comenzado
   bool _isStarted = false;
 
-  /// Creates a new controllable countdown controller.
+  /// Crea un nuevo controlador de cuenta atrás controlable.
   ///
-  /// [id] - Unique identifier for this countdown
-  /// [targetDate] - The target date/time for the countdown
-  /// [updateIntervalMs] - How often to update (default: 1000ms)
-  /// [useIsolate] - Force isolate (true), force timer (false), or auto-detect (null)
+  /// [id] - Identificador único para esta cuenta atrás
+  /// [targetDate] - La fecha/hora objetivo para la cuenta atrás
+  /// [updateIntervalMs] - Con qué frecuencia actualizar (por defecto: 1000ms)
+  /// [useIsolate] - Forzar isolate (true), forzar temporizador (false), o autodetección (nulo)
   ControllableCountdownController({
     required this.id,
     required DateTime targetDate,
     this.updateIntervalMs = 1000,
     this.useIsolate,
-  })  : _originalTargetDate = targetDate,
-        _currentTargetDate = targetDate;
+  }) : _originalTargetDate = targetDate,
+       _currentTargetDate = targetDate;
 
-  /// Stream of time remaining updates
+  /// Stream de las actualizaciones del tiempo restante
   Stream<TimeRemaining> get timeStream {
     _timeStreamController ??= StreamController<TimeRemaining>.broadcast();
     return _timeStreamController!.stream;
   }
 
-  /// Stream of state changes
+  /// Stream de los cambios de estado
   Stream<CountdownState> get stateStream => _stateStreamController.stream;
 
-  /// Current state of the countdown
+  /// Estado actual de la cuenta atrás
   CountdownState get state => _manager?.state ?? CountdownState.idle;
 
-  /// Whether the countdown is currently running
+  /// Si la cuenta atrás está actualmente en ejecución
   bool get isRunning => _manager?.isRunning ?? false;
 
-  /// Whether the countdown is currently paused
+  /// Si la cuenta atrás está actualmente en pausa
   bool get isPaused => _manager?.isPaused ?? false;
 
-  /// Whether the countdown has been started (may be paused/stopped)
+  /// Si la cuenta atrás ha comenzado (puede estar en pausa/detenida)
   bool get isStarted => _isStarted;
 
-  /// Whether the countdown has completed (reached zero)
+  /// Si la cuenta atrás ha finalizado (llegado a cero)
   bool get isCompleted => state == CountdownState.completed;
 
-  /// Current time remaining
+  /// Tiempo restante actual
   TimeRemaining get currentTimeRemaining => _currentTimeRemaining;
 
-  /// The original target date
+  /// La fecha objetivo original
   DateTime get originalTargetDate => _originalTargetDate;
 
-  /// The current target date
+  /// La fecha objetivo actual
   DateTime get currentTargetDate => _currentTargetDate;
 
-  /// Remaining duration (for paused state)
+  /// Duración restante (para el estado de pausa)
   Duration? get remainingDuration => _manager?.remainingDuration;
 
-  /// Starts the countdown timer.
+  /// Inicia el temporizador de la cuenta atrás.
   ///
-  /// Creates the appropriate manager (Isolate or Timer) based on platform
-  /// and useIsolate setting.
+  /// Crea el gestor apropiado (Isolate o Timer) basado en la plataforma
+  /// y la configuración de useIsolate.
   Future<void> start() async {
     if (_isStarted && state == CountdownState.running) return;
 
-    // Create manager if needed
+    // Crear el gestor si es necesario
     _manager ??= CountdownManagerFactory.create(
       forceTimer: useIsolate == false,
     );
 
     _timeStreamController ??= StreamController<TimeRemaining>.broadcast();
 
-    // Start the manager
+    // Iniciar el gestor
     final managerStream = await _manager!.start(
       _currentTargetDate,
       updateIntervalMs: updateIntervalMs,
     );
 
-    // Listen to manager updates
+    // Escuchar las actualizaciones del gestor
     _managerSubscription?.cancel();
     _managerSubscription = managerStream.listen(
       (timeRemaining) {
         _currentTimeRemaining = timeRemaining;
         _timeStreamController?.add(timeRemaining);
 
-        // Check for completion
+        // Comprobar si ha finalizado
         if (timeRemaining.isCompleted &&
             _manager?.state == CountdownState.completed) {
           _notifyStateChange(CountdownState.completed);
@@ -169,10 +169,10 @@ class ControllableCountdownController {
     _notifyStateChange(CountdownState.running);
   }
 
-  /// Pauses the countdown.
+  /// Pausa la cuenta atrás.
   ///
-  /// The countdown can be resumed from where it left off using [resume].
-  /// Does nothing if not running.
+  /// La cuenta atrás se puede reanudar desde donde se dejó usando [resume].
+  /// No hace nada si no está en ejecución.
   void pause() {
     if (_manager == null || !isRunning) return;
 
@@ -180,10 +180,10 @@ class ControllableCountdownController {
     _notifyStateChange(CountdownState.paused);
   }
 
-  /// Resumes a paused countdown.
+  /// Reanuda una cuenta atrás pausada.
   ///
-  /// The countdown continues from where it was paused.
-  /// Does nothing if not paused.
+  /// La cuenta atrás continúa desde donde se pausó.
+  /// No hace nada si no está en pausa.
   void resume() {
     if (_manager == null || !isPaused) return;
 
@@ -191,9 +191,9 @@ class ControllableCountdownController {
     _notifyStateChange(CountdownState.running);
   }
 
-  /// Toggles between paused and running states.
+  /// Alterna entre los estados de pausa y ejecución.
   ///
-  /// If running, pauses. If paused, resumes.
+  /// Si está en ejecución, pausa. Si está en pausa, reanuda.
   void togglePause() {
     if (isRunning) {
       pause();
@@ -202,17 +202,17 @@ class ControllableCountdownController {
     }
   }
 
-  /// Resets the countdown to the original target date.
+  /// Restablece la cuenta atrás a la fecha objetivo original.
   ///
-  /// If the countdown is running, it continues running with the new target.
-  /// If paused, it remains paused but updates the remaining time.
+  /// Si la cuenta atrás está en ejecución, continúa ejecutándose con el nuevo objetivo.
+  /// Si está en pausa, permanece en pausa pero actualiza el tiempo restante.
   void reset() {
     resetTo(_originalTargetDate);
   }
 
-  /// Resets the countdown to a new target date.
+  /// Restablece la cuenta atrás a una nueva fecha objetivo.
   ///
-  /// [newTargetDate] - The new target date/time
+  /// [newTargetDate] - La nueva fecha/hora objetivo
   void resetTo(DateTime newTargetDate) {
     _currentTargetDate = newTargetDate;
 
@@ -221,33 +221,33 @@ class ControllableCountdownController {
     }
   }
 
-  /// Stops the countdown completely.
+  /// Detiene la cuenta atrás por completo.
   ///
-  /// Unlike [pause], this indicates the countdown is done.
-  /// Call [start] to begin again.
+  /// A diferencia de [pause], esto indica que la cuenta atrás ha terminado.
+  /// Llama a [start] para comenzar de nuevo.
   void stop() {
     _manager?.stop();
     _notifyStateChange(CountdownState.stopped);
   }
 
-  /// Updates the target date while the countdown is running.
+  /// Actualiza la fecha objetivo mientras la cuenta atrás está en ejecución.
   ///
-  /// This is different from [resetTo] as it doesn't affect the running state.
+  /// Esto es diferente de [resetTo] ya que no afecta el estado de ejecución.
   void updateTargetDate(DateTime newTargetDate) {
     _currentTargetDate = newTargetDate;
     _manager?.updateTargetDate(newTargetDate);
   }
 
-  /// Notifies listeners of a state change
+  /// Notifica a los oyentes de un cambio de estado
   void _notifyStateChange(CountdownState newState) {
     if (!_stateStreamController.isClosed) {
       _stateStreamController.add(newState);
     }
   }
 
-  /// Disposes of all resources.
+  /// Libera todos los recursos.
   ///
-  /// Call this when the controller is no longer needed.
+  /// Llama a esto cuando el controlador ya no sea necesario.
   Future<void> dispose() async {
     _managerSubscription?.cancel();
     _managerSubscription = null;
@@ -264,107 +264,107 @@ class ControllableCountdownController {
   }
 }
 
-/// Manager for controlling multiple countdown controllers globally.
+/// Gestor para controlar múltiples controladores de cuenta atrás de forma global.
 ///
-/// Use this to pause, resume, or reset all countdowns at once.
+/// Úsalo para pausar, reanudar o restablecer todas las cuentas atrás a la vez.
 ///
-/// ## Example
+/// ## Ejemplo
 /// ```dart
 /// final globalManager = GlobalCountdownManager();
 ///
-/// // Register controllers
+/// // Registrar controladores
 /// globalManager.register(controller1);
 /// globalManager.register(controller2);
 ///
-/// // Pause all
+/// // Pausar todos
 /// globalManager.pauseAll();
 ///
-/// // Resume all
+/// // Reanudar todos
 /// globalManager.resumeAll();
 ///
-/// // Reset all to their original targets
+/// // Restablecer todos a sus objetivos originales
 /// globalManager.resetAll();
 ///
-/// // Clean up
+/// // Limpiar
 /// await globalManager.disposeAll();
 /// ```
 class GlobalCountdownManager {
   final Map<String, ControllableCountdownController> _controllers = {};
 
-  /// All registered controller IDs
+  /// Todos los IDs de los controladores registrados
   Iterable<String> get controllerIds => _controllers.keys;
 
-  /// Number of registered controllers
+  /// Número de controladores registrados
   int get count => _controllers.length;
 
-  /// Whether there are any registered controllers
+  /// Si hay algún controlador registrado
   bool get isEmpty => _controllers.isEmpty;
 
-  /// Whether there are registered controllers
+  /// Si hay controladores registrados
   bool get isNotEmpty => _controllers.isNotEmpty;
 
-  /// Registers a controller with the global manager.
+  /// Registra un controlador en el gestor global.
   ///
-  /// The controller's [id] is used as the key.
+  /// El [id] del controlador se usa como clave.
   void register(ControllableCountdownController controller) {
     _controllers[controller.id] = controller;
   }
 
-  /// Unregisters a controller from the global manager.
+  /// Cancela el registro de un controlador en el gestor global.
   ///
-  /// Does not dispose the controller.
+  /// No libera el controlador.
   void unregister(String id) {
     _controllers.remove(id);
   }
 
-  /// Gets a controller by ID.
+  /// Obtiene un controlador por ID.
   ControllableCountdownController? getController(String id) {
     return _controllers[id];
   }
 
-  /// Starts all registered countdowns.
+  /// Inicia todas las cuentas atrás registradas.
   Future<void> startAll() async {
     for (final controller in _controllers.values) {
       await controller.start();
     }
   }
 
-  /// Pauses all registered countdowns.
+  /// Pausa todas las cuentas atrás registradas.
   void pauseAll() {
     for (final controller in _controllers.values) {
       controller.pause();
     }
   }
 
-  /// Resumes all registered countdowns.
+  /// Reanuda todas las cuentas atrás registradas.
   void resumeAll() {
     for (final controller in _controllers.values) {
       controller.resume();
     }
   }
 
-  /// Resets all registered countdowns to their original target dates.
+  /// Restablece todas las cuentas atrás a sus fechas objetivo originales.
   void resetAll() {
     for (final controller in _controllers.values) {
       controller.reset();
     }
   }
 
-  /// Resets all registered countdowns to a new target date.
+  /// Restablece todas las cuentas atrás a una nueva fecha objetivo.
   void resetAllTo(DateTime newTargetDate) {
     for (final controller in _controllers.values) {
       controller.resetTo(newTargetDate);
     }
   }
 
-  /// Stops all registered countdowns.
+  /// Detiene todas las cuentas atrás registradas.
   void stopAll() {
     for (final controller in _controllers.values) {
       controller.stop();
     }
   }
 
-  /// Disposes all registered controllers and clears the registry.
+  /// Libera todos los controladores registrados y borra el registro.
   Future<void> disposeAll() async {
     for (final controller in _controllers.values) {
       await controller.dispose();

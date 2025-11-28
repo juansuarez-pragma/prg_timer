@@ -1,26 +1,26 @@
-/// A customizable countdown timer widget with image carousel,
-/// powered by Dart Isolates for optimal performance on native platforms.
+/// Un widget de temporizador de cuenta atrás personalizable con carrusel de imágenes,
+/// impulsado por Dart Isolates para un rendimiento óptimo en plataformas nativas.
 ///
-/// ## Platform Support
+/// ## Soporte de Plataforma
 ///
-/// This package automatically detects the platform and uses the appropriate
-/// implementation:
+/// Este paquete detecta automáticamente la plataforma y utiliza la implementación
+/// apropiada:
 ///
-/// - **Native platforms** (iOS, Android, macOS, Windows, Linux):
-///   Uses Dart Isolates for background countdown calculations.
+/// - **Plataformas nativas** (iOS, Android, macOS, Windows, Linux):
+///   Utiliza Dart Isolates para cálculos de cuenta atrás en segundo plano.
 ///
-/// - **Web platform**:
-///   Uses Timer.periodic since Isolates are NOT supported on web.
+/// - **Plataforma web**:
+///   Utiliza Timer.periodic ya que los Isolates NO son compatibles con la web.
 ///
-/// ## Main Components
+/// ## Componentes Principales
 ///
-/// - [CountdownCarouselWidget]: Main widget with countdown timer and image carousel
-/// - [CountdownOnlyWidget]: Simpler widget with just the countdown timer
-/// - [TimeRemaining]: Model for countdown time values
-/// - [CarouselImageItem]: Model for carousel images
-/// - [CountdownManagerFactory]: Factory for creating platform-appropriate managers
+/// - [CountdownCarouselWidget]: Widget principal con temporizador de cuenta atrás y carrusel de imágenes
+/// - [CountdownOnlyWidget]: Widget más simple solo con el temporizador de cuenta atrás
+/// - [TimeRemaining]: Modelo para los valores de tiempo de cuenta atrás
+/// - [CarouselImageItem]: Modelo para las imágenes del carrusel
+/// - [CountdownManagerFactory]: Fábrica para crear gestores apropiados para la plataforma
 ///
-/// ## Example Usage
+/// ## Ejemplo de Uso
 ///
 /// ```dart
 /// import 'package:countdown_carousel_widget/countdown_carousel_widget.dart';
@@ -30,19 +30,19 @@
 ///   images: [
 ///     CarouselImageItem.fromProvider(NetworkImage('https://example.com/image.jpg')),
 ///   ],
-///   onAddImage: () => print('Add image tapped'),
-///   onCountdownComplete: () => print('Countdown complete!'),
+///   onAddImage: () => print('Añadir imagen tocada'),
+///   onCountdownComplete: () => print('¡Cuenta atrás completada!'),
 /// )
 /// ```
 ///
-/// ## Checking Platform Support
+/// ## Comprobación del Soporte de Plataforma
 ///
 /// ```dart
-/// // Check if isolates are supported on the current platform
+/// // Comprobar si los isolates son compatibles con la plataforma actual
 /// if (CountdownManagerFactory.isolatesSupported) {
-///   print('Running on native platform with Isolate support');
+///   print('Ejecutando en plataforma nativa con soporte de Isolate');
 /// } else {
-///   print('Running on web platform with Timer fallback');
+///   print('Ejecutando en plataforma web con fallback de Timer');
 /// }
 /// ```
 library;
@@ -54,7 +54,8 @@ export 'src/models/countdown_config.dart'
 // Countdown managers (for advanced usage)
 export 'src/isolates/countdown_manager_interface.dart'
     show CountdownManagerBase, CountdownState;
-export 'src/isolates/countdown_manager_factory.dart' show CountdownManagerFactory;
+export 'src/isolates/countdown_manager_factory.dart'
+    show CountdownManagerFactory;
 export 'src/isolates/countdown_timer_manager.dart' show CountdownTimerManager;
 
 // Controllers

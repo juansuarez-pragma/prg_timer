@@ -1,12 +1,12 @@
 import 'countdown_manager_interface.dart';
 
-/// Stub implementation - this file should never be imported directly.
-/// Use conditional imports in countdown_manager_factory.dart instead.
+/// Implementación stub - este archivo nunca debe importarse directamente.
+/// En su lugar, utiliza importaciones condicionales en countdown_manager_factory.dart.
 CountdownManagerBase createCountdownManager() {
   throw UnsupportedError(
-    'Cannot create CountdownManager without dart:isolate or dart:html',
+    'No se puede crear CountdownManager sin dart:isolate o dart:html',
   );
 }
 
-/// Stub for checking if isolates are supported
+/// Stub para comprobar si los isolates son compatibles
 bool get isolatesSupported => false;

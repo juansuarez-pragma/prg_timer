@@ -1,6 +1,6 @@
-// Copyright 2024 Juan Suarez - Pragma. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
+// Copyright 2024 Juan Suarez - Pragma. Todos los derechos reservados.
+// El uso de este código fuente se rige por una licencia MIT que se puede
+// encontrar en el archivo LICENSE.
 
 /// Aplicación de ejemplo para el paquete countdown_carousel_widget.
 ///
@@ -59,9 +59,7 @@ class CountdownExampleApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // Usar el color principal del paquete como semilla del tema
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF1E3A5F),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1E3A5F)),
         useMaterial3: true,
       ),
       home: const MainNavigationPage(),
@@ -91,10 +89,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   ///
   /// Cada página es un demo independiente que muestra diferentes
   /// aspectos del paquete.
-  final List<Widget> _pages = const [
-    BasicDemoPage(),
-    MultiCountdownDemoPage(),
-  ];
+  final List<Widget> _pages = const [BasicDemoPage(), MultiCountdownDemoPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +103,7 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
           });
         },
         destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.timer),
-            label: 'Demo Básico',
-          ),
+          NavigationDestination(icon: Icon(Icons.timer), label: 'Demo Básico'),
           NavigationDestination(
             icon: Icon(Icons.grid_view),
             label: 'Multi Countdown',

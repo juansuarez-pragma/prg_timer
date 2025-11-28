@@ -4,7 +4,7 @@ import 'dart:isolate';
 import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interface.dart';
 
-/// Message types for isolate communication
+/// Tipos de mensajes para la comunicación con el isolate
 enum _IsolateMessageType {
   start,
   stop,
@@ -18,7 +18,7 @@ enum _IsolateMessageType {
   stateUpdate,
 }
 
-/// Message wrapper for isolate communication
+/// Envoltorio de mensajes para la comunicación con el isolate
 class _IsolateMessage {
   final _IsolateMessageType type;
   final dynamic data;
@@ -26,10 +26,7 @@ class _IsolateMessage {
   const _IsolateMessage(this.type, [this.data]);
 
   Map<String, dynamic> toMap() {
-    return {
-      'type': type.index,
-      'data': data,
-    };
+    return {'type': type.index, 'data': data};
   }
 
   factory _IsolateMessage.fromMap(Map<String, dynamic> map) {
@@ -40,7 +37,7 @@ class _IsolateMessage {
   }
 }
 
-/// Setup data passed to the isolate on creation
+/// Datos de configuración pasados al isolate en su creación
 class _IsolateSetupData {
   final SendPort sendPort;
   final int targetDateMs;
@@ -53,22 +50,22 @@ class _IsolateSetupData {
   });
 }
 
-/// Isolate-based countdown manager for native platforms.
+/// Gestor de cuenta atrás basado en Isolate para plataformas nativas.
 ///
-/// This implementation spawns a separate Isolate to handle countdown
-/// calculations, keeping the main UI thread free.
+/// Esta implementación genera un Isolate separado para manejar los
+/// cálculos de la cuenta atrás, manteniendo libre el hilo principal de la UI.
 ///
-/// **Important**: This class should ONLY be used on native platforms
-/// (iOS, Android, macOS, Windows, Linux). It will NOT work on web.
+/// **Importante**: Esta clase SOLO debe usarse en plataformas nativas
+/// (iOS, Android, macOS, Windows, Linux). NO funcionará en la web.
 ///
-/// ## Features
-/// - Start/Stop countdown in background isolate
-/// - Pause/Resume without destroying the isolate
-/// - Reset to new target date
-/// - Independent operation (each instance has its own isolate)
+/// ## Características
+/// - Iniciar/Detener la cuenta atrás en un isolate en segundo plano
+/// - Pausar/Reanudar sin destruir el isolate
+/// - Restablecer a una nueva fecha objetivo
+/// - Operación independiente (cada instancia tiene su propio isolate)
 ///
-/// Use [CountdownManagerFactory.create()] to automatically get the
-/// correct implementation for the current platform.
+/// Usa [CountdownManagerFactory.create()] para obtener automáticamente la
+/// implementación correcta para la plataforma actual.
 class CountdownIsolateManager implements CountdownManagerBase {
   Isolate? _isolate;
   ReceivePort? _receivePort;
@@ -98,14 +95,14 @@ class CountdownIsolateManager implements CountdownManagerBase {
     DateTime targetDate, {
     int updateIntervalMs = 1000,
   }) async {
-    // Clean up any existing isolate
+    // Limpiar cualquier isolate existente
     await dispose();
 
     _updateIntervalMs = updateIntervalMs;
     _streamController = StreamController<TimeRemaining>.broadcast();
     _receivePort = ReceivePort();
 
-    // Spawn the isolate
+    // Generar el isolate
     _isolate = await Isolate.spawn(
       _isolateEntryPoint,
       _IsolateSetupData(
@@ -117,10 +114,10 @@ class CountdownIsolateManager implements CountdownManagerBase {
 
     _state = CountdownState.running;
 
-    // Listen for messages from the isolate
+    // Escuchar los mensajes del isolate
     _receivePort!.listen((message) {
       if (message is SendPort) {
-        // Store the send port for bidirectional communication
+        // Almacenar el send port para la comunicación bidireccional
         _sendPort = message;
       } else if (message is Map<String, dynamic>) {
         final isolateMessage = _IsolateMessage.fromMap(message);
@@ -136,8 +133,9 @@ class CountdownIsolateManager implements CountdownManagerBase {
 
     switch (message.type) {
       case _IsolateMessageType.timeUpdate:
-        final timeRemaining =
-            TimeRemaining.fromMap(message.data as Map<String, dynamic>);
+        final timeRemaining = TimeRemaining.fromMap(
+          message.data as Map<String, dynamic>,
+        );
         _streamController?.add(timeRemaining);
         break;
       case _IsolateMessageType.completed:
@@ -149,8 +147,9 @@ class CountdownIsolateManager implements CountdownManagerBase {
         final stateIndex = data['state'] as int;
         _state = CountdownState.values[stateIndex];
         if (data['remainingMs'] != null) {
-          _pausedRemainingDuration =
-              Duration(milliseconds: data['remainingMs'] as int);
+          _pausedRemainingDuration = Duration(
+            milliseconds: data['remainingMs'] as int,
+          );
         }
         break;
       case _IsolateMessageType.error:
@@ -164,10 +163,12 @@ class CountdownIsolateManager implements CountdownManagerBase {
   @override
   void updateTargetDate(DateTime newTargetDate) {
     if (_sendPort != null) {
-      _sendPort!.send(_IsolateMessage(
-        _IsolateMessageType.updateTarget,
-        newTargetDate.millisecondsSinceEpoch,
-      ).toMap());
+      _sendPort!.send(
+        _IsolateMessage(
+          _IsolateMessageType.updateTarget,
+          newTargetDate.millisecondsSinceEpoch,
+        ).toMap(),
+      );
     }
   }
 
@@ -192,10 +193,12 @@ class CountdownIsolateManager implements CountdownManagerBase {
   @override
   void reset(DateTime newTargetDate) {
     if (_sendPort != null) {
-      _sendPort!.send(_IsolateMessage(
-        _IsolateMessageType.reset,
-        newTargetDate.millisecondsSinceEpoch,
-      ).toMap());
+      _sendPort!.send(
+        _IsolateMessage(
+          _IsolateMessageType.reset,
+          newTargetDate.millisecondsSinceEpoch,
+        ).toMap(),
+      );
       // If was paused, stay paused; if was running, stay running
       if (_state == CountdownState.completed ||
           _state == CountdownState.stopped) {
@@ -227,11 +230,11 @@ class CountdownIsolateManager implements CountdownManagerBase {
   }
 }
 
-/// Entry point for the countdown isolate (runs in separate isolate)
+/// Punto de entrada para el isolate de la cuenta atrás (se ejecuta en un isolate separado)
 void _isolateEntryPoint(_IsolateSetupData setupData) {
   final receivePort = ReceivePort();
 
-  // Send our receive port back to the main isolate for bidirectional communication
+  // Enviar nuestro receive port de vuelta al isolate principal para la comunicación bidireccional
   setupData.sendPort.send(receivePort.sendPort);
 
   int targetDateMs = setupData.targetDateMs;
@@ -241,7 +244,7 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
   bool isPaused = false;
   int? pausedRemainingMs;
 
-  // Function to calculate and send time remaining
+  // Función para calcular y enviar el tiempo restante
   void sendTimeUpdate() {
     if (!isRunning || isPaused) return;
 
@@ -250,7 +253,7 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
     final difference = targetDate.difference(now);
 
     if (difference.isNegative || difference == Duration.zero) {
-      // Countdown completed
+      // Cuenta atrás finalizada
       setupData.sendPort.send(
         _IsolateMessage(_IsolateMessageType.completed).toMap(),
       );
@@ -261,8 +264,10 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
 
     final timeRemaining = TimeRemaining.fromDuration(difference);
     setupData.sendPort.send(
-      _IsolateMessage(_IsolateMessageType.timeUpdate, timeRemaining.toMap())
-          .toMap(),
+      _IsolateMessage(
+        _IsolateMessageType.timeUpdate,
+        timeRemaining.toMap(),
+      ).toMap(),
     );
   }
 
@@ -283,13 +288,13 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
     );
   }
 
-  // Send initial time update
+  // Enviar la actualización de tiempo inicial
   sendTimeUpdate();
 
-  // Start periodic updates
+  // Iniciar las actualizaciones periódicas
   startTimer();
 
-  // Listen for messages from the main isolate
+  // Escuchar los mensajes del isolate principal
   receivePort.listen((message) {
     if (message is Map<String, dynamic>) {
       final isolateMessage = _IsolateMessage.fromMap(message);
@@ -308,63 +313,71 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
           if (!isPaused) {
             sendTimeUpdate();
           } else {
-            // Update paused remaining time
+            // Actualizar el tiempo restante en pausa
             final now = DateTime.now();
-            final targetDate = DateTime.fromMillisecondsSinceEpoch(targetDateMs);
+            final targetDate = DateTime.fromMillisecondsSinceEpoch(
+              targetDateMs,
+            );
             pausedRemainingMs = targetDate.difference(now).inMilliseconds;
             final timeRemaining = TimeRemaining.fromDuration(
               Duration(milliseconds: pausedRemainingMs!),
             );
             setupData.sendPort.send(
               _IsolateMessage(
-                      _IsolateMessageType.timeUpdate, timeRemaining.toMap())
-                  .toMap(),
+                _IsolateMessageType.timeUpdate,
+                timeRemaining.toMap(),
+              ).toMap(),
             );
           }
           break;
 
         case _IsolateMessageType.pause:
           if (isRunning && !isPaused) {
-            // Store remaining time
+            // Almacenar el tiempo restante
             final now = DateTime.now();
-            final targetDate = DateTime.fromMillisecondsSinceEpoch(targetDateMs);
+            final targetDate = DateTime.fromMillisecondsSinceEpoch(
+              targetDateMs,
+            );
             pausedRemainingMs = targetDate.difference(now).inMilliseconds;
 
-            // Cancel timer but keep isolate alive
+            // Cancelar el temporizador pero mantener vivo el isolate
             timer?.cancel();
             timer = null;
             isPaused = true;
 
-            // Send current time one more time
+            // Enviar la hora actual una vez más
             final timeRemaining = TimeRemaining.fromDuration(
               Duration(milliseconds: pausedRemainingMs!),
             );
             setupData.sendPort.send(
               _IsolateMessage(
-                      _IsolateMessageType.timeUpdate, timeRemaining.toMap())
-                  .toMap(),
+                _IsolateMessageType.timeUpdate,
+                timeRemaining.toMap(),
+              ).toMap(),
             );
 
-            // Notify state change
-            sendStateUpdate(CountdownState.paused.index,
-                remainingMs: pausedRemainingMs);
+            // Notificar el cambio de estado
+            sendStateUpdate(
+              CountdownState.paused.index,
+              remainingMs: pausedRemainingMs,
+            );
           }
           break;
 
         case _IsolateMessageType.resume:
           if (isPaused && pausedRemainingMs != null) {
-            // Calculate new target based on remaining time
+            // Calcular el nuevo objetivo basado en el tiempo restante
             targetDateMs = DateTime.now()
                 .add(Duration(milliseconds: pausedRemainingMs!))
                 .millisecondsSinceEpoch;
             pausedRemainingMs = null;
             isPaused = false;
 
-            // Send immediate update and restart timer
+            // Enviar actualización inmediata y reiniciar el temporizador
             sendTimeUpdate();
             startTimer();
 
-            // Notify state change
+            // Notificar el cambio de estado
             sendStateUpdate(CountdownState.running.index);
           }
           break;
@@ -374,9 +387,11 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
           pausedRemainingMs = null;
 
           if (isPaused) {
-            // Stay paused but update remaining time
+            // Mantenerse en pausa pero actualizar el tiempo restante
             final now = DateTime.now();
-            final targetDate = DateTime.fromMillisecondsSinceEpoch(targetDateMs);
+            final targetDate = DateTime.fromMillisecondsSinceEpoch(
+              targetDateMs,
+            );
             pausedRemainingMs = targetDate.difference(now).inMilliseconds;
 
             final timeRemaining = TimeRemaining.fromDuration(
@@ -384,11 +399,12 @@ void _isolateEntryPoint(_IsolateSetupData setupData) {
             );
             setupData.sendPort.send(
               _IsolateMessage(
-                      _IsolateMessageType.timeUpdate, timeRemaining.toMap())
-                  .toMap(),
+                _IsolateMessageType.timeUpdate,
+                timeRemaining.toMap(),
+              ).toMap(),
             );
           } else {
-            // If was completed or stopped, restart
+            // Si se completó o se detuvo, reiniciar
             isRunning = true;
             sendTimeUpdate();
             startTimer();

@@ -2,31 +2,31 @@ import 'dart:async';
 
 import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 
-/// State of a countdown manager
+/// Estado de un gestor de cuenta atrás
 enum CountdownState {
-  /// Initial state, not started yet
+  /// Estado inicial, aún no ha comenzado
   idle,
 
-  /// Countdown is actively running
+  /// La cuenta atrás está activa
   running,
 
-  /// Countdown is paused (can be resumed)
+  /// La cuenta atrás está en pausa (se puede reanudar)
   paused,
 
-  /// Countdown has completed (reached zero)
+  /// La cuenta atrás ha finalizado (llegado a cero)
   completed,
 
-  /// Countdown was stopped (disposed)
+  /// La cuenta atrás se ha detenido (desechado)
   stopped,
 }
 
-/// Abstract interface for countdown managers.
+/// Interfaz abstracta para los gestores de cuenta atrás.
 ///
-/// This allows different implementations for different platforms:
-/// - [CountdownIsolateManager] for native platforms (iOS, Android, macOS, Windows, Linux)
-/// - [CountdownTimerManager] for web platform (where Isolates are not supported)
+/// Esto permite diferentes implementaciones para diferentes plataformas:
+/// - [CountdownIsolateManager] para plataformas nativas (iOS, Android, macOS, Windows, Linux)
+/// - [CountdownTimerManager] para la plataforma web (donde los Isolates no son compatibles)
 ///
-/// ## Lifecycle
+/// ## Ciclo de vida
 ///
 /// ```
 /// idle -> start() -> running -> pause() -> paused -> resume() -> running
@@ -40,49 +40,49 @@ enum CountdownState {
 ///                               stopped
 /// ```
 abstract class CountdownManagerBase {
-  /// Stream of time remaining updates
+  /// Stream de las actualizaciones del tiempo restante
   Stream<TimeRemaining>? get timeStream;
 
-  /// Whether the countdown is currently running (not paused, not stopped)
+  /// Si la cuenta atrás está actualmente en ejecución (no en pausa, no detenida)
   bool get isRunning;
 
-  /// Whether the countdown is currently paused
+  /// Si la cuenta atrás está actualmente en pausa
   bool get isPaused;
 
-  /// Current state of the countdown
+  /// Estado actual de la cuenta atrás
   CountdownState get state;
 
-  /// The remaining time when paused (used for resume)
+  /// El tiempo restante cuando está en pausa (usado para reanudar)
   Duration? get remainingDuration;
 
-  /// Starts the countdown to the target date
+  /// Inicia la cuenta atrás hasta la fecha objetivo
   ///
-  /// Returns a Stream that emits [TimeRemaining] updates
+  /// Devuelve un Stream que emite actualizaciones de [TimeRemaining]
   Future<Stream<TimeRemaining>> start(
     DateTime targetDate, {
     int updateIntervalMs = 1000,
   });
 
-  /// Updates the target date while the countdown is running
+  /// Actualiza la fecha objetivo mientras la cuenta atrás está en ejecución
   void updateTargetDate(DateTime newTargetDate);
 
-  /// Pauses the countdown without disposing resources.
-  /// The countdown can be resumed from where it left off using [resume].
+  /// Pausa la cuenta atrás sin liberar los recursos.
+  /// La cuenta atrás se puede reanudar desde donde se dejó usando [resume].
   void pause();
 
-  /// Resumes a paused countdown from where it left off.
-  /// Does nothing if the countdown is not paused.
+  /// Reanuda una cuenta atrás pausada desde donde se dejó.
+  /// No hace nada si la cuenta atrás no está en pausa.
   void resume();
 
-  /// Resets the countdown to a new target date.
-  /// If running, it will continue running with the new target.
-  /// If paused, it will remain paused but update the target.
+  /// Restablece la cuenta atrás a una nueva fecha objetivo.
+  /// Si está en ejecución, continuará ejecutándose con el nuevo objetivo.
+  /// Si está en pausa, permanecerá en pausa pero actualizará el objetivo.
   void reset(DateTime newTargetDate);
 
-  /// Stops the countdown completely.
-  /// Unlike [pause], this prepares for disposal.
+  /// Detiene la cuenta atrás por completo.
+  /// A diferencia de [pause], esto prepara la liberación de recursos.
   void stop();
 
-  /// Disposes of resources
+  /// Libera los recursos
   Future<void> dispose();
 }

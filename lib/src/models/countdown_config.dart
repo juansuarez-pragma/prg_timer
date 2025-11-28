@@ -1,18 +1,18 @@
-/// Model representing the remaining time for the countdown.
+/// Modelo que representa el tiempo restante para la cuenta atrás.
 class TimeRemaining {
-  /// Days remaining
+  /// Días restantes
   final int days;
 
-  /// Hours remaining (0-23)
+  /// Horas restantes (0-23)
   final int hours;
 
-  /// Minutes remaining (0-59)
+  /// Minutos restantes (0-59)
   final int minutes;
 
-  /// Seconds remaining (0-59)
+  /// Segundos restantes (0-59)
   final int seconds;
 
-  /// Whether the countdown has completed
+  /// Si la cuenta atrás ha finalizado
   final bool isCompleted;
 
   const TimeRemaining({
@@ -23,15 +23,15 @@ class TimeRemaining {
     this.isCompleted = false,
   });
 
-  /// Creates a TimeRemaining instance representing zero time (countdown complete)
+  /// Crea una instancia de TimeRemaining que representa tiempo cero (cuenta atrás completada)
   const TimeRemaining.zero()
-      : days = 0,
-        hours = 0,
-        minutes = 0,
-        seconds = 0,
-        isCompleted = true;
+    : days = 0,
+      hours = 0,
+      minutes = 0,
+      seconds = 0,
+      isCompleted = true;
 
-  /// Creates a TimeRemaining from a Duration
+  /// Crea un TimeRemaining a partir de una Duration
   factory TimeRemaining.fromDuration(Duration duration) {
     if (duration.isNegative || duration == Duration.zero) {
       return const TimeRemaining.zero();
@@ -52,14 +52,14 @@ class TimeRemaining {
     );
   }
 
-  /// Calculates TimeRemaining from a target DateTime
+  /// Calcula TimeRemaining a partir de una fecha y hora objetivo
   factory TimeRemaining.fromTargetDate(DateTime targetDate) {
     final now = DateTime.now();
     final difference = targetDate.difference(now);
     return TimeRemaining.fromDuration(difference);
   }
 
-  /// Converts to a Map for isolate communication
+  /// Convierte a un mapa para la comunicación con el isolate
   Map<String, dynamic> toMap() {
     return {
       'days': days,
@@ -70,7 +70,7 @@ class TimeRemaining {
     };
   }
 
-  /// Creates from a Map (for isolate communication)
+  /// Crea desde un mapa (para la comunicación con el isolate)
   factory TimeRemaining.fromMap(Map<String, dynamic> map) {
     return TimeRemaining(
       days: map['days'] as int,
@@ -103,15 +103,15 @@ class TimeRemaining {
   }
 }
 
-/// Configuration for the countdown timer widget
+/// Configuración para el widget del temporizador de cuenta atrás
 class CountdownConfig {
-  /// The target date/time for the countdown
+  /// La fecha/hora objetivo para la cuenta atrás
   final DateTime targetDate;
 
-  /// Whether to use an isolate for time calculations
+  /// Si se debe usar un isolate para los cálculos de tiempo
   final bool useIsolate;
 
-  /// Update interval in milliseconds (default: 1000ms = 1 second)
+  /// Intervalo de actualización en milisegundos (por defecto: 1000ms = 1 segundo)
   final int updateIntervalMs;
 
   const CountdownConfig({
@@ -120,7 +120,7 @@ class CountdownConfig {
     this.updateIntervalMs = 1000,
   });
 
-  /// Converts to a Map for isolate communication
+  /// Convierte a un mapa para la comunicación con el isolate
   Map<String, dynamic> toMap() {
     return {
       'targetDateMs': targetDate.millisecondsSinceEpoch,
@@ -128,36 +128,38 @@ class CountdownConfig {
     };
   }
 
-  /// Creates from a Map (for isolate communication)
+  /// Crea desde un mapa (para la comunicación con el isolate)
   factory CountdownConfig.fromMap(Map<String, dynamic> map) {
     return CountdownConfig(
-      targetDate: DateTime.fromMillisecondsSinceEpoch(map['targetDateMs'] as int),
+      targetDate: DateTime.fromMillisecondsSinceEpoch(
+        map['targetDateMs'] as int,
+      ),
       updateIntervalMs: map['updateIntervalMs'] as int,
     );
   }
 }
 
-/// Theme configuration for the countdown display
+/// Configuración del tema para la visualización de la cuenta atrás
 class CountdownTheme {
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final int boxColorValue;
 
-  /// Text color for the numbers
+  /// Color del texto de los números
   final int numberColorValue;
 
-  /// Text color for the labels (DAYS, HOURS, etc.)
+  /// Color del texto de las etiquetas (DÍAS, HORAS, etc.)
   final int labelColorValue;
 
-  /// Background color of the carousel section
+  /// Color de fondo de la sección del carrusel
   final int carouselBackgroundColorValue;
 
-  /// Border radius for the main container
+  /// Radio del borde del contenedor principal
   final double borderRadius;
 
-  /// Border radius for individual time boxes
+  /// Radio del borde de las cajas de tiempo individuales
   final double boxBorderRadius;
 
-  /// Spacing between time boxes
+  /// Espaciado entre las cajas de tiempo
   final double boxSpacing;
 
   const CountdownTheme({
@@ -170,6 +172,6 @@ class CountdownTheme {
     this.boxSpacing = 8.0,
   });
 
-  /// Default theme matching the design
+  /// Tema por defecto que coincide con el diseño
   static const CountdownTheme defaultTheme = CountdownTheme();
 }

@@ -1,6 +1,6 @@
-// Copyright 2024 Juan Suarez - Pragma. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
+// Copyright 2024 Juan Suarez - Pragma. Todos los derechos reservados.
+// El uso de este código fuente se rige por una licencia MIT que se puede
+// encontrar en el archivo LICENSE.
 
 /// Demo de múltiples countdowns independientes.
 ///
@@ -105,19 +105,18 @@ class _MultiCountdownDemoPageState extends State<MultiCountdownDemoPage> {
   /// Todos los controladores se registran en el [GlobalCountdownManager]
   /// para permitir operaciones por lotes.
   void _initializeControllers() {
-    _controllers =
-        _countdownConfigs.map((config) {
-          final controller = ControllableCountdownController(
-            id: config.id,
-            targetDate: DateTime.now().add(config.duration),
-            useIsolate: true, // ¡Cada countdown en su propio Isolate!
-          );
+    _controllers = _countdownConfigs.map((config) {
+      final controller = ControllableCountdownController(
+        id: config.id,
+        targetDate: DateTime.now().add(config.duration),
+        useIsolate: true, // ¡Cada countdown en su propio Isolate!
+      );
 
-          // Registrar en el manager global
-          _globalManager.register(controller);
+      // Registrar en el manager global
+      _globalManager.register(controller);
 
-          return controller;
-        }).toList();
+      return controller;
+    }).toList();
   }
 
   @override

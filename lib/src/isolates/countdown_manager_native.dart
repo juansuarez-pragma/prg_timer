@@ -1,11 +1,11 @@
 import 'countdown_manager_interface.dart';
 import 'countdown_isolate_manager.dart';
 
-/// Creates a countdown manager for native platforms (iOS, Android, macOS, Windows, Linux).
-/// Uses Isolates for background processing.
+/// Crea un gestor de cuenta atrás para plataformas nativas (iOS, Android, macOS, Windows, Linux).
+/// Usa Isolates para el procesamiento en segundo plano.
 CountdownManagerBase createCountdownManager() {
   return CountdownIsolateManager();
 }
 
-/// Isolates are supported on native platforms
+/// Los Isolates son compatibles con las plataformas nativas
 bool get isolatesSupported => true;

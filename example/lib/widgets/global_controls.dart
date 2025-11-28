@@ -1,6 +1,6 @@
-// Copyright 2024 Juan Suarez - Pragma. All rights reserved.
-// Use of this source code is governed by a MIT license that can be
-// found in the LICENSE file.
+// Copyright 2024 Juan Suarez - Pragma. Todos los derechos reservados.
+// El uso de este código fuente se rige por una licencia MIT que se puede
+// encontrar en el archivo LICENSE.
 
 /// Widget de controles globales para gestionar múltiples countdowns.
 ///

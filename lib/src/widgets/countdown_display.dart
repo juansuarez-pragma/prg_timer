@@ -3,33 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 import 'package:countdown_carousel_widget/src/widgets/time_box.dart';
 
-/// Display widget showing the countdown timer with 4 time boxes
+/// Widget de visualización que muestra el temporizador de cuenta atrás con 4 cajas de tiempo
 class CountdownDisplay extends StatelessWidget {
-  /// The current time remaining
+  /// El tiempo restante actual
   final TimeRemaining timeRemaining;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Text color for the numbers
+  /// Color del texto de los números
   final Color numberColor;
 
-  /// Text color for the labels
+  /// Color del texto de las etiquetas
   final Color labelColor;
 
-  /// Border radius for the time boxes
+  /// Radio del borde de las cajas de tiempo
   final double boxBorderRadius;
 
-  /// Spacing between time boxes
+  /// Espaciado entre las cajas de tiempo
   final double boxSpacing;
 
-  /// Whether to animate value changes
+  /// Si se deben animar los cambios de valor
   final bool animate;
 
-  /// Custom labels for the time units (defaults to DAYS, HOURS, MINS, SECS)
+  /// Etiquetas personalizadas para las unidades de tiempo (por defecto DÍAS, HORAS, MINS, SECS)
   final List<String>? labels;
 
-  /// Padding inside the display container
+  /// Relleno dentro del contenedor de visualización
   final EdgeInsetsGeometry padding;
 
   const CountdownDisplay({
@@ -92,27 +92,27 @@ class CountdownDisplay extends StatelessWidget {
   }
 }
 
-/// A responsive countdown display that adapts to available space
+/// Una visualización de cuenta atrás responsiva que se adapta al espacio disponible
 class ResponsiveCountdownDisplay extends StatelessWidget {
-  /// The current time remaining
+  /// El tiempo restante actual
   final TimeRemaining timeRemaining;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Text color for the numbers
+  /// Color del texto de los números
   final Color numberColor;
 
-  /// Text color for the labels
+  /// Color del texto de las etiquetas
   final Color labelColor;
 
-  /// Border radius for the time boxes
+  /// Radio del borde de las cajas de tiempo
   final double boxBorderRadius;
 
-  /// Whether to animate value changes
+  /// Si se deben animar los cambios de valor
   final bool animate;
 
-  /// Custom labels for the time units
+  /// Etiquetas personalizadas para las unidades de tiempo
   final List<String>? labels;
 
   const ResponsiveCountdownDisplay({
@@ -178,7 +178,9 @@ class ResponsiveCountdownDisplay extends StatelessWidget {
 
               return Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: index < 3 ? 4.0 : 0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: index < 3 ? 4.0 : 0,
+                  ),
                   child: timeBox,
                 ),
               );

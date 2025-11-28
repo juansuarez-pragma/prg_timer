@@ -4,19 +4,20 @@ import 'countdown_timer_manager.dart';
 // Conditional imports: uses the correct implementation based on platform
 import 'countdown_manager_stub.dart'
     if (dart.library.io) 'countdown_manager_native.dart'
-    if (dart.library.html) 'countdown_manager_web.dart' as platform;
+    if (dart.library.html) 'countdown_manager_web.dart'
+    as platform;
 
-/// Factory class for creating the appropriate countdown manager
-/// based on the current platform.
+/// Clase factory para crear el gestor de cuenta atrás apropiado
+/// basado en la plataforma actual.
 ///
-/// On native platforms (iOS, Android, macOS, Windows, Linux):
-/// - Creates [CountdownIsolateManager] which uses Dart Isolates
+/// En plataformas nativas (iOS, Android, macOS, Windows, Linux):
+/// - Crea [CountdownIsolateManager] que usa Dart Isolates
 ///
-/// On web platform:
-/// - Creates [CountdownTimerManager] which uses Timer.periodic
-///   (since Isolates are NOT supported on web)
+/// En la plataforma web:
+/// - Crea [CountdownTimerManager] que usa Timer.periodic
+/// (ya que los Isolates NO son compatibles con la web)
 ///
-/// Example:
+/// Ejemplo:
 /// ```dart
 /// final manager = CountdownManagerFactory.create();
 /// final stream = await manager.start(targetDate);
@@ -24,13 +25,13 @@ import 'countdown_manager_stub.dart'
 class CountdownManagerFactory {
   CountdownManagerFactory._();
 
-  /// Creates the appropriate countdown manager for the current platform.
+  /// Crea el gestor de cuenta atrás apropiado para la plataforma actual.
   ///
-  /// If [forceTimer] is true, always returns a [CountdownTimerManager]
-  /// regardless of platform. This is useful for:
-  /// - Testing
-  /// - When you want consistent behavior across platforms
-  /// - When isolate overhead is not worth it for simple countdowns
+  /// Si [forceTimer] es verdadero, siempre devuelve un [CountdownTimerManager]
+  /// independientemente de la plataforma. Esto es útil para:
+  /// - Pruebas
+  /// - Cuando se desea un comportamiento consistente en todas las plataformas
+  /// - Cuando la sobrecarga del isolate no vale la pena para cuentas atrás simples
   static CountdownManagerBase create({bool forceTimer = false}) {
     if (forceTimer) {
       return CountdownTimerManager();
@@ -38,19 +39,19 @@ class CountdownManagerFactory {
     return platform.createCountdownManager();
   }
 
-  /// Returns true if the current platform supports Isolates.
+  /// Devuelve verdadero si la plataforma actual admite Isolates.
   ///
-  /// - Returns `true` on native platforms (iOS, Android, macOS, Windows, Linux)
-  /// - Returns `false` on web platform
+  /// - Devuelve `true` en plataformas nativas (iOS, Android, macOS, Windows, Linux)
+  /// - Devuelve `false` en la plataforma web
   static bool get isolatesSupported => platform.isolatesSupported;
 
-  /// Returns a human-readable description of the current platform's
-  /// countdown implementation.
+  /// Devuelve una descripción legible por humanos de la implementación de la cuenta atrás
+  /// de la plataforma actual.
   static String get platformDescription {
     if (platform.isolatesSupported) {
-      return 'Native platform: Using Isolate-based countdown manager';
+      return 'Plataforma nativa: Usando el gestor de cuenta atrás basado en Isolate';
     } else {
-      return 'Web platform: Using Timer-based countdown manager (Isolates not supported)';
+      return 'Plataforma web: Usando el gestor de cuenta atrás basado en Timer (Isolates no soportados)';
     }
   }
 }

@@ -7,64 +7,64 @@ import 'package:countdown_carousel_widget/src/isolates/countdown_manager_interfa
 import 'package:countdown_carousel_widget/src/models/countdown_config.dart';
 import 'package:countdown_carousel_widget/src/widgets/countdown_display.dart';
 
-/// A countdown widget with external control capabilities.
+/// Un widget de cuenta atrás con capacidades de control externo.
 ///
-/// Unlike [CountdownOnlyWidget], this widget takes a [ControllableCountdownController]
-/// which allows external control of the countdown (pause, resume, reset).
+/// A diferencia de [CountdownOnlyWidget], este widget toma un [ControllableCountdownController]
+/// que permite el control externo de la cuenta atrás (pausar, reanudar, restablecer).
 ///
-/// ## Features
-/// - Displays countdown timer (days, hours, minutes, seconds)
-/// - Externally controllable via [ControllableCountdownController]
-/// - Visual state indicators (paused, completed)
-/// - Customizable colors and labels
+/// ## Características
+/// - Muestra el temporizador de cuenta atrás (días, horas, minutos, segundos)
+/// - Controlable externamente a través de [ControllableCountdownController]
+/// - Indicadores de estado visuales (en pausa, completado)
+/// - Colores y etiquetas personalizables
 ///
-/// ## Example
+/// ## Ejemplo
 /// ```dart
 /// final controller = ControllableCountdownController(
 ///   id: 'my_countdown',
 ///   targetDate: DateTime.now().add(Duration(hours: 5)),
 /// );
 ///
-/// // In your widget build:
+/// // En la compilación de tu widget:
 /// ControllableCountdownWidget(
 ///   controller: controller,
-///   onCountdownComplete: () => print('Done!'),
+///   onCountdownComplete: () => print('¡Terminado!'),
 /// )
 ///
-/// // Control from anywhere:
+/// // Control desde cualquier lugar:
 /// controller.pause();
 /// controller.resume();
 /// controller.reset();
 /// ```
 class ControllableCountdownWidget extends StatefulWidget {
-  /// The controller that manages this countdown
+  /// El controlador que gestiona esta cuenta atrás
   final ControllableCountdownController controller;
 
-  /// Callback when countdown reaches zero
+  /// Callback cuando la cuenta atrás llega a cero
   final VoidCallback? onCountdownComplete;
 
-  /// Callback when state changes
+  /// Callback cuando cambia el estado
   final void Function(CountdownState state)? onStateChanged;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Color of the countdown numbers
+  /// Color de los números de la cuenta atrás
   final Color numberColor;
 
-  /// Color of the labels (DAYS, HOURS, etc.)
+  /// Color de las etiquetas (DÍAS, HORAS, etc.)
   final Color labelColor;
 
-  /// Custom labels for the time units
+  /// Etiquetas personalizadas para las unidades de tiempo
   final List<String>? timeLabels;
 
-  /// Whether to show state indicator overlay
+  /// Si se debe mostrar el indicador de estado superpuesto
   final bool showStateIndicator;
 
-  /// Whether to animate value changes
+  /// Si se deben animar los cambios de valor
   final bool animateChanges;
 
-  /// Opacity when paused (to indicate paused state)
+  /// Opacidad cuando está en pausa (para indicar el estado de pausa)
   final double pausedOpacity;
 
   const ControllableCountdownWidget({
@@ -215,51 +215,51 @@ class _ControllableCountdownWidgetState
   }
 }
 
-/// A card widget that displays a controllable countdown with built-in controls.
+/// Un widget de tarjeta que muestra una cuenta atrás controlable con controles incorporados.
 ///
-/// This is a convenience widget that combines [ControllableCountdownWidget]
-/// with pause/resume and reset buttons.
+/// Este es un widget de conveniencia que combina [ControllableCountdownWidget]
+/// con botones de pausa/reanudar y restablecer.
 ///
-/// ## Example
+/// ## Ejemplo
 /// ```dart
 /// ControllableCountdownCard(
 ///   controller: controller,
-///   title: 'Event Countdown',
+///   title: 'Cuenta atrás del evento',
 ///   showControls: true,
 /// )
 /// ```
 class ControllableCountdownCard extends StatefulWidget {
-  /// The controller that manages this countdown
+  /// El controlador que gestiona esta cuenta atrás
   final ControllableCountdownController controller;
 
-  /// Title displayed above the countdown
+  /// Título mostrado encima de la cuenta atrás
   final String? title;
 
-  /// Whether to show the control buttons
+  /// Si se deben mostrar los botones de control
   final bool showControls;
 
-  /// Callback when countdown reaches zero
+  /// Callback cuando la cuenta atrás llega a cero
   final VoidCallback? onCountdownComplete;
 
-  /// Background color of the card
+  /// Color de fondo de la tarjeta
   final Color? cardColor;
 
-  /// Background color of the time boxes
+  /// Color de fondo de las cajas de tiempo
   final Color boxColor;
 
-  /// Color of the countdown numbers
+  /// Color de los números de la cuenta atrás
   final Color numberColor;
 
-  /// Color of the labels
+  /// Color de las etiquetas
   final Color labelColor;
 
-  /// Custom labels for time units
+  /// Etiquetas personalizadas para las unidades de tiempo
   final List<String>? timeLabels;
 
-  /// Padding inside the card
+  /// Relleno dentro de la tarjeta
   final EdgeInsets padding;
 
-  /// Border radius of the card
+  /// Radio del borde de la tarjeta
   final double borderRadius;
 
   const ControllableCountdownCard({
@@ -336,9 +336,9 @@ class _ControllableCountdownCardState extends State<ControllableCountdownCard> {
             if (widget.title != null) ...[
               Text(
                 widget.title!,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
             ],
@@ -365,9 +365,7 @@ class _ControllableCountdownCardState extends State<ControllableCountdownCard> {
                         widget.controller.resume();
                       }
                     },
-                    icon: Icon(
-                      isRunning ? Icons.pause : Icons.play_arrow,
-                    ),
+                    icon: Icon(isRunning ? Icons.pause : Icons.play_arrow),
                     tooltip: isRunning ? 'Pause' : 'Resume',
                   ),
                   const SizedBox(width: 8),
@@ -378,9 +376,7 @@ class _ControllableCountdownCardState extends State<ControllableCountdownCard> {
                     },
                     icon: const Icon(Icons.refresh),
                     tooltip: 'Reset',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                    ),
+                    style: IconButton.styleFrom(backgroundColor: Colors.orange),
                   ),
                 ],
               ),

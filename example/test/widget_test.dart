@@ -13,8 +13,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:countdown_example/main.dart';
 
 void main() {
-  testWidgets('La aplicación de ejemplo se construye correctamente',
-      (WidgetTester tester) async {
+  testWidgets('La aplicación de ejemplo se construye correctamente', (
+    WidgetTester tester,
+  ) async {
     // Construir la aplicación
     await tester.pumpWidget(const CountdownExampleApp());
 
@@ -25,8 +26,9 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
   });
 
-  testWidgets('La navegación entre pestañas funciona',
-      (WidgetTester tester) async {
+  testWidgets('La navegación entre pestañas funciona', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const CountdownExampleApp());
 
     // Inicialmente estamos en "Demo Básico"

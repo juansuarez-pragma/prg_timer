@@ -5,7 +5,12 @@ import 'package:countdown_carousel_widget/countdown_carousel_widget.dart';
 void main() {
   group('TimeRemaining', () {
     test('creates from duration correctly', () {
-      final duration = const Duration(days: 2, hours: 14, minutes: 35, seconds: 20);
+      final duration = const Duration(
+        days: 2,
+        hours: 14,
+        minutes: 35,
+        seconds: 20,
+      );
       final timeRemaining = TimeRemaining.fromDuration(duration);
 
       expect(timeRemaining.days, 2);
@@ -62,7 +67,10 @@ void main() {
 
       // Should be approximately 1 hour
       expect(timeRemaining.days, 0);
-      expect(timeRemaining.hours, 0); // Could be 0 or 1 depending on exact timing
+      expect(
+        timeRemaining.hours,
+        0,
+      ); // Could be 0 or 1 depending on exact timing
       expect(timeRemaining.isCompleted, false);
     });
   });
@@ -82,9 +90,7 @@ void main() {
     });
 
     test('default values are set correctly', () {
-      final config = CountdownConfig(
-        targetDate: DateTime.now(),
-      );
+      final config = CountdownConfig(targetDate: DateTime.now());
 
       expect(config.useIsolate, true);
       expect(config.updateIntervalMs, 1000);
@@ -123,12 +129,7 @@ void main() {
     testWidgets('displays value with zero padding', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: TimeBox(
-              value: 5,
-              label: 'DAYS',
-            ),
-          ),
+          home: Scaffold(body: TimeBox(value: 5, label: 'DAYS')),
         ),
       );
 
@@ -136,15 +137,12 @@ void main() {
       expect(find.text('DAYS'), findsOneWidget);
     });
 
-    testWidgets('displays two-digit value without extra padding', (tester) async {
+    testWidgets('displays two-digit value without extra padding', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: TimeBox(
-              value: 25,
-              label: 'HOURS',
-            ),
-          ),
+          home: Scaffold(body: TimeBox(value: 25, label: 'HOURS')),
         ),
       );
 
@@ -205,14 +203,13 @@ void main() {
   });
 
   group('ImageCarousel Widget', () {
-    testWidgets('shows add image button when onAddImage is provided', (tester) async {
+    testWidgets('shows add image button when onAddImage is provided', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: ImageCarousel(
-              images: const [],
-              onAddImage: () {},
-            ),
+            body: ImageCarousel(images: const [], onAddImage: () {}),
           ),
         ),
       );
@@ -273,28 +270,27 @@ void main() {
     // 1. The CountdownTimerManager tests which verify completion detection
     // 2. Manual testing in the example application
     // 3. The ControllableCountdownController tests for completion callbacks
-    testWidgets(
-      'calls onCountdownComplete when countdown finishes',
-      (tester) async {
-        // Test intentionally left simple - completion is verified via other tests
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: CountdownCarouselWidget(
-                targetDate: DateTime.now().add(const Duration(seconds: 10)),
-                useIsolate: false,
-              ),
+    testWidgets('calls onCountdownComplete when countdown finishes', (
+      tester,
+    ) async {
+      // Test intentionally left simple - completion is verified via other tests
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: CountdownCarouselWidget(
+              targetDate: DateTime.now().add(const Duration(seconds: 10)),
+              useIsolate: false,
             ),
           ),
-        );
+        ),
+      );
 
-        await tester.pump();
+      await tester.pump();
 
-        // Verify widget renders correctly
-        expect(find.text('DAYS'), findsOneWidget);
-        expect(find.text('SECS'), findsOneWidget);
-      },
-    );
+      // Verify widget renders correctly
+      expect(find.text('DAYS'), findsOneWidget);
+      expect(find.text('SECS'), findsOneWidget);
+    });
   });
 
   group('CountdownOnlyWidget', () {

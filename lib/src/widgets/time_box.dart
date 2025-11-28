@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 
-/// A single time unit box displaying a value and label (e.g., "02" / "DAYS")
+/// Una caja de unidad de tiempo individual que muestra un valor y una etiqueta (por ejemplo, "02" / "DÍAS")
 class TimeBox extends StatelessWidget {
-  /// The numeric value to display (will be zero-padded to 2 digits)
+  /// El valor numérico a mostrar (se rellenará con ceros a la izquierda hasta 2 dígitos)
   final int value;
 
-  /// The label text (e.g., "DAYS", "HOURS", "MINS", "SECS")
+  /// El texto de la etiqueta (por ejemplo, "DÍAS", "HORAS", "MINS", "SECS")
   final String label;
 
-  /// Background color of the box
+  /// Color de fondo de la caja
   final Color boxColor;
 
-  /// Text color for the number
+  /// Color del texto del número
   final Color numberColor;
 
-  /// Text color for the label
+  /// Color del texto de la etiqueta
   final Color labelColor;
 
-  /// Border radius of the box
+  /// Radio del borde de la caja
   final double borderRadius;
 
-  /// Width of the box (null for flexible)
+  /// Ancho de la caja (nulo para flexible)
   final double? width;
 
-  /// Height of the box (null for flexible)
+  /// Altura de la caja (nulo para flexible)
   final double? height;
 
-  /// Font size for the number
+  /// Tamaño de fuente para el número
   final double? numberFontSize;
 
-  /// Font size for the label
+  /// Tamaño de fuente para la etiqueta
   final double? labelFontSize;
 
   const TimeBox({
@@ -96,39 +96,39 @@ class TimeBox extends StatelessWidget {
   }
 }
 
-/// Animated version of TimeBox with flip animation on value change
+/// Versión animada de TimeBox con animación de giro al cambiar el valor
 class AnimatedTimeBox extends StatefulWidget {
-  /// The numeric value to display
+  /// El valor numérico a mostrar
   final int value;
 
-  /// The label text
+  /// El texto de la etiqueta
   final String label;
 
-  /// Background color of the box
+  /// Color de fondo de la caja
   final Color boxColor;
 
-  /// Text color for the number
+  /// Color del texto del número
   final Color numberColor;
 
-  /// Text color for the label
+  /// Color del texto de la etiqueta
   final Color labelColor;
 
-  /// Border radius of the box
+  /// Radio del borde de la caja
   final double borderRadius;
 
-  /// Width of the box
+  /// Ancho de la caja
   final double? width;
 
-  /// Height of the box
+  /// Altura de la caja
   final double? height;
 
-  /// Font size for the number
+  /// Tamaño de fuente para el número
   final double? numberFontSize;
 
-  /// Font size for the label
+  /// Tamaño de fuente para la etiqueta
   final double? labelFontSize;
 
-  /// Animation duration
+  /// Duración de la animación
   final Duration animationDuration;
 
   const AnimatedTimeBox({
@@ -165,13 +165,17 @@ class _AnimatedTimeBoxState extends State<AnimatedTimeBox>
 
     _scaleAnimation = TweenSequence<double>([
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.0, end: 1.1)
-            .chain(CurveTween(curve: Curves.easeOut)),
+        tween: Tween<double>(
+          begin: 1.0,
+          end: 1.1,
+        ).chain(CurveTween(curve: Curves.easeOut)),
         weight: 50,
       ),
       TweenSequenceItem(
-        tween: Tween<double>(begin: 1.1, end: 1.0)
-            .chain(CurveTween(curve: Curves.easeIn)),
+        tween: Tween<double>(
+          begin: 1.1,
+          end: 1.0,
+        ).chain(CurveTween(curve: Curves.easeIn)),
         weight: 50,
       ),
     ]).animate(_controller);
