@@ -1,9 +1,11 @@
-// This is a basic Flutter widget test.
+// Copyright 2024 Juan Suarez - Pragma. All rights reserved.
+// Use of this source code is governed by a MIT license that can be
+// found in the LICENSE file.
+
+// Tests básicos para la aplicación de ejemplo.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// Estos tests verifican que la aplicación de ejemplo se construye
+// correctamente y que la navegación funciona.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,20 +13,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:countdown_example/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('La aplicación de ejemplo se construye correctamente',
+      (WidgetTester tester) async {
+    // Construir la aplicación
+    await tester.pumpWidget(const CountdownExampleApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verificar que el título de la app bar está presente
+    expect(find.text('Demo Básico'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verificar que la barra de navegación está presente
+    expect(find.byType(NavigationBar), findsOneWidget);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  testWidgets('La navegación entre pestañas funciona',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const CountdownExampleApp());
+
+    // Inicialmente estamos en "Demo Básico"
+    expect(find.text('Demo Básico'), findsWidgets);
+
+    // Navegar a "Multi Countdown"
+    await tester.tap(find.text('Multi Countdown'));
+    await tester.pumpAndSettle();
+
+    // Verificar que cambiamos de página
+    expect(find.text('Demo Multi-Countdown'), findsOneWidget);
   });
 }

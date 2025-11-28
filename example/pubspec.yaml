@@ -1,5 +1,24 @@
+# Aplicación de ejemplo para countdown_carousel_widget
+#
+# Demuestra todas las funcionalidades del paquete incluyendo:
+# - CountdownCarouselWidget con carrusel de imágenes
+# - CountdownOnlyWidget para solo countdown
+# - ControllableCountdownController para control individual
+# - GlobalCountdownManager para control por lotes
+# - Soporte de Isolates en plataformas nativas
+# - Fallback de Timer en web
+#
+# Ejecutar:
+#   flutter run -d chrome  # Web
+#   flutter run -d macos   # macOS
+#   flutter run -d android # Android
+
 name: countdown_example
-description: "Example app demonstrating the countdown_carousel_widget package."
+description: >
+  Aplicación de ejemplo que demuestra el uso del paquete countdown_carousel_widget.
+  Incluye demos de countdown básico con carrusel y múltiples countdowns independientes.
+
+# Este ejemplo no se publica en pub.dev
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -10,15 +29,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Íconos de Cupertino para iOS
   cupertino_icons: ^1.0.8
 
-  # Use the local package
+  # El paquete principal - usa path para desarrollo local
   countdown_carousel_widget:
     path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Lints recomendados para Flutter
   flutter_lints: ^5.0.0
 
 flutter:
